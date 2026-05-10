@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Icon } from "@/components/Icons";
 
 export default function TeacherSignupStep1() {
   const router = useRouter();
@@ -28,7 +29,6 @@ export default function TeacherSignupStep1() {
       return;
     }
 
-    // Store step 1 data in sessionStorage for step 2
     sessionStorage.setItem("teacher_step1", JSON.stringify(form));
     router.push("/signup/teacher/step2");
   }
@@ -36,19 +36,14 @@ export default function TeacherSignupStep1() {
   return (
     <div style={{ padding: "24px 20px 32px", maxWidth: 400, margin: "0 auto" }}>
       <Link href="/signup" style={{ display: "flex", alignItems: "center", gap: 5, color: "var(--d-gray-500)", fontSize: 13, marginBottom: 20 }}>
-        ← Back
+        <Icon name="arrowLeft" size={14} /> Back
       </Link>
 
-      <Link href="/" className="brand" style={{ marginBottom: 0 }}>
-        <span className="brand-mark" style={{ width: 28, height: 28 }}><img src="/assets/logo-cap.svg" alt="" /></span>
-        <span className="brand-text" style={{ fontSize: "1rem" }}>LearnGrid</span>
-      </Link>
-
-      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "14px 0 3px", letterSpacing: "-0.3px" }}>
+      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 3px", letterSpacing: "-0.3px" }}>
         Become a Teacher
       </h1>
       <p style={{ fontSize: 13, color: "var(--d-gray-500)", marginBottom: 14 }}>
-        Step 1 of 2 — Basic Information
+        Step 1 of 2 - Basic Information
       </p>
 
       <div className="step-progress">
@@ -69,7 +64,7 @@ export default function TeacherSignupStep1() {
 
         <div className="form-group">
           <label className="form-label">Phone Number <span className="required">*</span></label>
-          <input className="form-input" type="tel" placeholder="+234 — Nigerian number" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} autoComplete="tel" />
+          <input className="form-input" type="tel" placeholder="+234 Nigerian number" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} autoComplete="tel" />
         </div>
 
         <div className="form-group">
@@ -85,7 +80,9 @@ export default function TeacherSignupStep1() {
 
         {error && (
           <div className="notice notice-red">
-            <p>⚠ {error}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Icon name="alertTriangle" size={16} /> {error}
+            </p>
           </div>
         )}
 
@@ -93,9 +90,9 @@ export default function TeacherSignupStep1() {
           className="btn btn-primary btn-block"
           type="submit"
           disabled={!filled}
-          style={{ opacity: filled ? 1 : 0.5, marginTop: 8 }}
+          style={{ opacity: filled ? 1 : 0.5, marginTop: 8, gap: 8 }}
         >
-          Continue to Step 2 →
+          Continue to Step 2 <Icon name="arrowRight" size={16} />
         </button>
       </form>
 

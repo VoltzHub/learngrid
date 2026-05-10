@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { signUp, type AuthFormState } from "@/lib/actions/auth";
 import { useState } from "react";
+import { Icon } from "@/components/Icons";
 
 function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
@@ -14,7 +15,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
       disabled={pending || disabled}
       style={{ opacity: pending || disabled ? 0.5 : 1 }}
     >
-      {pending ? "Creating account…" : "Create Account"}
+      {pending ? "Creating account..." : "Create Account"}
     </button>
   );
 }
@@ -24,10 +25,11 @@ export default function StudentSignupPage() {
   const [agreed, setAgreed] = useState(false);
 
   if (state && !state.error) {
-    // Success state
     return (
       <div style={{ padding: "48px 20px", textAlign: "center", maxWidth: 400, margin: "0 auto" }}>
-        <div className="success-icon" style={{ background: "var(--d-green-light)" }}>🎉</div>
+        <div className="success-icon" style={{ background: "var(--d-green-light)", color: "var(--d-green)" }}>
+          <Icon name="check" size={30} />
+        </div>
         <h2 style={{ fontSize: 21, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.3px" }}>
           Check your email!
         </h2>
@@ -49,15 +51,10 @@ export default function StudentSignupPage() {
   return (
     <div style={{ padding: "24px 20px 32px", maxWidth: 400, margin: "0 auto" }}>
       <Link href="/signup" style={{ display: "flex", alignItems: "center", gap: 5, color: "var(--d-gray-500)", fontSize: 13, marginBottom: 20 }}>
-        ← Back
+        <Icon name="arrowLeft" size={14} /> Back
       </Link>
 
-      <Link href="/" className="brand" style={{ marginBottom: 0 }}>
-        <span className="brand-mark" style={{ width: 28, height: 28 }}><img src="/assets/logo-cap.svg" alt="" /></span>
-        <span className="brand-text" style={{ fontSize: "1rem" }}>LearnGrid</span>
-      </Link>
-
-      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "14px 0 4px", letterSpacing: "-0.3px" }}>
+      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", letterSpacing: "-0.3px" }}>
         Create Student Account
       </h1>
       <p style={{ fontSize: 13, color: "var(--d-gray-500)", marginBottom: 20 }}>
@@ -85,7 +82,9 @@ export default function StudentSignupPage() {
 
         {state?.error && (
           <div className="notice notice-red">
-            <p>⚠ {state.error}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Icon name="alertTriangle" size={16} /> {state.error}
+            </p>
           </div>
         )}
 

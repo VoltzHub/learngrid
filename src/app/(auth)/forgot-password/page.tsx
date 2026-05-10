@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Icon } from "@/components/Icons";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,9 @@ export default function ForgotPasswordPage() {
   if (sent) {
     return (
       <div style={{ padding: "48px 20px", textAlign: "center", maxWidth: 400, margin: "0 auto" }}>
-        <div style={{ fontSize: 52, marginBottom: 16 }}>📩</div>
+        <div className="success-icon" style={{ background: "var(--d-blue-light)", color: "var(--d-blue)" }}>
+          <Icon name="mail" size={30} />
+        </div>
         <h2 style={{ fontSize: 21, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.3px" }}>
           Check your inbox
         </h2>
@@ -41,8 +44,8 @@ export default function ForgotPasswordPage() {
           </button>
         </p>
         <p style={{ marginTop: 10 }}>
-          <Link href="/signin" style={{ color: "var(--d-blue)", fontWeight: 700, fontSize: 13 }}>
-            ← Back to Sign In
+          <Link href="/signin" style={{ color: "var(--d-blue)", fontWeight: 700, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <Icon name="arrowLeft" size={14} /> Back to Sign In
           </Link>
         </p>
       </div>
@@ -52,10 +55,12 @@ export default function ForgotPasswordPage() {
   return (
     <div style={{ padding: "32px 20px", maxWidth: 400, margin: "0 auto" }}>
       <Link href="/signin" style={{ display: "flex", alignItems: "center", gap: 5, color: "var(--d-gray-500)", fontSize: 13, marginBottom: 20 }}>
-        ← Back
+        <Icon name="arrowLeft" size={14} /> Back
       </Link>
       <div style={{ textAlign: "center", marginBottom: 26 }}>
-        <div style={{ fontSize: 46, marginBottom: 12 }}>🔑</div>
+        <div className="success-icon" style={{ background: "var(--d-blue-light)", color: "var(--d-blue)" }}>
+          <Icon name="key" size={30} />
+        </div>
         <h1 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.3px" }}>
           Reset your password
         </h1>
@@ -70,7 +75,7 @@ export default function ForgotPasswordPage() {
           <input className="form-input" type="email" placeholder="The email on your account" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <button className="btn btn-primary btn-block" type="submit" disabled={!email || loading} style={{ opacity: !email || loading ? 0.5 : 1, marginTop: 8 }}>
-          {loading ? "Sending…" : "Send Reset Link"}
+          {loading ? "Sending..." : "Send Reset Link"}
         </button>
       </form>
 

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { createClass, type ClassFormState } from "@/lib/actions/classes";
+import { Icon } from "@/components/Icons";
 
 function SubmitBtn({ label, disabled }: { label: string; disabled?: boolean }) {
   const { pending } = useFormStatus();
   return (
     <button className="btn btn-primary" type="submit" disabled={pending || disabled} style={{ flex: 1, opacity: pending || disabled ? 0.5 : 1 }}>
-      {pending ? "Saving…" : label}
+      {pending ? "Saving..." : label}
     </button>
   );
 }
@@ -20,17 +21,19 @@ export default function CreateClassPage() {
     return (
       <>
         <div className="page-back-header">
-          <Link href="/dashboard/teacher/classes" className="page-back-btn">←</Link>
+          <Link href="/dashboard/teacher/classes" className="page-back-btn" aria-label="Back"><Icon name="arrowLeft" size={20} /></Link>
           <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>New Live Class</h2>
         </div>
         <div className="success-state">
-          <div className="success-icon" style={{ background: "var(--d-gray-100)" }}>📝</div>
+          <div className="success-icon" style={{ background: "var(--d-gray-100)", color: "var(--d-gray-600)" }}>
+            <Icon name="fileText" size={30} />
+          </div>
           <h2 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Saved as Draft</h2>
           <p style={{ fontSize: 13, color: "var(--d-gray-500)", lineHeight: 1.6, marginBottom: 6 }}>
             Your class has been saved as a draft.
           </p>
           <p style={{ fontSize: 13, color: "var(--d-gray-500)", marginBottom: 24 }}>
-            Publish when ready — students can&apos;t see drafts.
+            Publish when ready - students can&apos;t see drafts.
           </p>
           <div className="btn-row">
             <Link className="btn btn-primary" href="/dashboard/teacher/classes" style={{ flex: 1, textAlign: "center" }}>
@@ -48,7 +51,7 @@ export default function CreateClassPage() {
   return (
     <>
       <div className="page-back-header">
-        <Link href="/dashboard/teacher/classes" className="page-back-btn">←</Link>
+        <Link href="/dashboard/teacher/classes" className="page-back-btn" aria-label="Back"><Icon name="arrowLeft" size={20} /></Link>
         <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>New Live Class</h2>
       </div>
 
@@ -95,17 +98,21 @@ export default function CreateClassPage() {
 
           <div className="form-group">
             <label className="form-label">Description</label>
-            <textarea className="form-input form-textarea" name="description" placeholder="Describe what students will learn…" />
+            <textarea className="form-input form-textarea" name="description" placeholder="Describe what students will learn..." />
           </div>
 
           {state?.error && (
             <div className="notice notice-red">
-              <p>⚠ {state.error}</p>
+              <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Icon name="alertTriangle" size={16} /> {state.error}
+              </p>
             </div>
           )}
 
           <div className="notice notice-blue">
-            <p>📌 Saved as <strong>DRAFT</strong> first. Only published classes are visible to students.</p>
+            <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Icon name="pin" size={16} /> Saved as <strong>DRAFT</strong> first. Only published classes are visible to students.
+            </p>
           </div>
 
           <div className="btn-row">

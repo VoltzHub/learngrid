@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { getTeacherClasses } from "@/lib/actions/classes";
 import { ClassStatus } from "@prisma/client";
+import { Icon } from "@/components/Icons";
+import { TeacherBottomNav } from "@/components/TeacherBottomNav";
 
 const STATUS_MAP: Record<string, ClassStatus | undefined> = {
   all: undefined,
@@ -50,7 +52,7 @@ export default async function MyClassesPage({
 
       {classes.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state-icon">📋</div>
+          <div className="empty-state-icon"><Icon name="clipboardList" size={40} /></div>
           <p className="empty-state-title">No classes yet</p>
           <p className="empty-state-desc">Create your first live class and start earning in Naira.</p>
           <Link className="btn btn-primary btn-block" href="/dashboard/teacher/classes/new">
@@ -65,15 +67,18 @@ export default async function MyClassesPage({
                 <p className="class-card-title">{cls.title}</p>
                 <span className={`status-badge ${BADGE_CLASS[cls.status]}`}>{cls.status}</span>
               </div>
-              <p className="class-card-date">
-                📅 {cls.status === "DRAFT" ? "Not scheduled" : cls.scheduledAt.toLocaleDateString("en-NG", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+              <p className="class-card-date" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <Icon name="calendar" size={14} />
+                {cls.status === "DRAFT" ? "Not scheduled" : cls.scheduledAt.toLocaleDateString("en-NG", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
               </p>
               <div className="class-card-bottom">
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span className="class-card-price">₦{cls.priceNgn.toLocaleString()}</span>
                   <span className="class-card-seats">· {cls._count.enrolments}/{cls.seatLimit}</span>
                 </div>
-                <span className="class-card-link">View →</span>
+                <span className="class-card-link" style={{ display: "inline-flex", alignItems: "center", gap: 3 }}>
+                  View <Icon name="arrowRight" size={12} />
+                </span>
               </div>
             </Link>
           ))}
@@ -81,13 +86,7 @@ export default async function MyClassesPage({
       )}
 
       <div style={{ marginTop: "auto" }} />
-      <nav className="bottom-nav">
-        <Link href="/dashboard/teacher" className="bottom-nav-item"><span className="bottom-nav-icon">⊞</span><span className="bottom-nav-label">Home</span></Link>
-        <Link href="/dashboard/teacher/classes" className="bottom-nav-item active"><span className="bottom-nav-icon">☰</span><span className="bottom-nav-label">Classes</span></Link>
-        <div className="bottom-nav-fab"><Link href="/dashboard/teacher/classes/new" className="bottom-nav-fab-btn">+</Link></div>
-        <Link href="/dashboard/teacher/earnings" className="bottom-nav-item"><span className="bottom-nav-icon">₦</span><span className="bottom-nav-label">Earn</span></Link>
-        <Link href="/dashboard/teacher/profile" className="bottom-nav-item"><span className="bottom-nav-icon">◉</span><span className="bottom-nav-label">Profile</span></Link>
-      </nav>
+      <TeacherBottomNav active="classes" />
     </>
   );
 }

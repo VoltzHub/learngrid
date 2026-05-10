@@ -1,14 +1,13 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icons";
 
 export default function VerificationPendingPage() {
   return (
     <div style={{ padding: "28px 20px", maxWidth: 400, margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: 22 }}>
-        <Link href="/" className="brand" style={{ justifyContent: "center", marginBottom: 0 }}>
-          <span className="brand-mark" style={{ width: 28, height: 28 }}><img src="/assets/logo-cap.svg" alt="" /></span>
-          <span className="brand-text" style={{ fontSize: "1rem" }}>LearnGrid</span>
-        </Link>
-        <div style={{ fontSize: 40, margin: "18px 0 12px" }}>⏳</div>
+        <div className="success-icon" style={{ background: "var(--d-amber-light)", color: "var(--d-amber)", width: 64, height: 64 }}>
+          <Icon name="clock" size={30} />
+        </div>
         <span className="status-badge badge-pending">Pending Review</span>
         <h2 style={{ fontSize: 19, fontWeight: 700, margin: "14px 0 8px", letterSpacing: "-0.3px" }}>
           Application Under Review
@@ -28,7 +27,7 @@ export default function VerificationPendingPage() {
         ].map((item) => (
           <div className="verif-check-item" key={item.label}>
             <div className={`verif-check-icon ${item.done ? "verif-check-done" : "verif-check-pending"}`}>
-              {item.done ? "✓" : "–"}
+              {item.done ? <Icon name="check" size={12} /> : "-"}
             </div>
             <span className="verif-check-label">{item.label}</span>
           </div>
@@ -36,7 +35,9 @@ export default function VerificationPendingPage() {
       </div>
 
       <div className="notice notice-amber">
-        <p>📬 Estimated review: <strong>24–48 hours</strong>. Check your email (including spam).</p>
+        <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <Icon name="mail" size={16} /> Estimated review: <strong>24-48 hours</strong>. Check your email (including spam).
+        </p>
       </div>
 
       <Link className="btn btn-secondary btn-block" href="mailto:support@learngrid.ng">

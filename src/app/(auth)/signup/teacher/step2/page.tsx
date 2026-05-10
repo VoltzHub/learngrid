@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { signUp, type AuthFormState } from "@/lib/actions/auth";
 import { useFormState, useFormStatus } from "react-dom";
+import { Icon } from "@/components/Icons";
 
 function SubmitBtn({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
   return (
     <button className="btn btn-primary btn-block" type="submit" disabled={pending || disabled} style={{ opacity: pending || disabled ? 0.5 : 1 }}>
-      {pending ? "Submitting…" : "Submit Application"}
+      {pending ? "Submitting..." : "Submit Application"}
     </button>
   );
 }
@@ -38,7 +39,6 @@ export default function TeacherSignupStep2() {
 
   const [state, formAction] = useFormState<AuthFormState, FormData>(signUp, undefined);
 
-  // If signup succeeded, redirect to verification pending
   useEffect(() => {
     if (state && !state.error) {
       sessionStorage.removeItem("teacher_step1");
@@ -56,7 +56,6 @@ export default function TeacherSignupStep2() {
       setError("Teaching qualification is required.");
       return;
     }
-    // Inject step1 data into formData
     formData.set("fullName", step1.fullName);
     formData.set("email", step1.email);
     formData.set("password", step1.password);
@@ -73,19 +72,14 @@ export default function TeacherSignupStep2() {
   return (
     <div style={{ padding: "24px 20px 32px", maxWidth: 400, margin: "0 auto" }}>
       <Link href="/signup/teacher" style={{ display: "flex", alignItems: "center", gap: 5, color: "var(--d-gray-500)", fontSize: 13, marginBottom: 20 }}>
-        ← Back
+        <Icon name="arrowLeft" size={14} /> Back
       </Link>
 
-      <Link href="/" className="brand" style={{ marginBottom: 0 }}>
-        <span className="brand-mark" style={{ width: 28, height: 28 }}><img src="/assets/logo-cap.svg" alt="" /></span>
-        <span className="brand-text" style={{ fontSize: "1rem" }}>LearnGrid</span>
-      </Link>
-
-      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "14px 0 3px", letterSpacing: "-0.3px" }}>
+      <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 3px", letterSpacing: "-0.3px" }}>
         Teaching Profile
       </h1>
       <p style={{ fontSize: 13, color: "var(--d-gray-500)", marginBottom: 14 }}>
-        Step 2 of 2 — Professional Details
+        Step 2 of 2 - Professional Details
       </p>
 
       <div className="step-progress">
@@ -109,12 +103,18 @@ export default function TeacherSignupStep2() {
           <input ref={qualRef} type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: "none" }} onChange={(e) => setQualFile(e.target.files?.[0] ?? null)} />
           <div className={`upload-zone${qualFile ? " has-file" : ""}${error && !qualFile ? " error" : ""}`} onClick={() => qualRef.current?.click()}>
             {qualFile ? (
-              <p className="upload-zone-file">📎 {qualFile.name} · {(qualFile.size / 1024).toFixed(0)} KB</p>
+              <p className="upload-zone-file" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Icon name="paperclip" size={15} /> {qualFile.name} · {(qualFile.size / 1024).toFixed(0)} KB
+              </p>
             ) : (
               <p className="upload-zone-text">Tap to upload · PDF, JPG, PNG</p>
             )}
           </div>
-          {error && !qualFile && <p className="form-error">⚠ {error}</p>}
+          {error && !qualFile && (
+            <p className="form-error" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <Icon name="alertTriangle" size={14} /> {error}
+            </p>
+          )}
         </div>
 
         <div className="form-group">
@@ -122,7 +122,9 @@ export default function TeacherSignupStep2() {
           <input ref={idRef} type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: "none" }} onChange={(e) => setIdFile(e.target.files?.[0] ?? null)} />
           <div className={`upload-zone${idFile ? " has-file" : ""}`} onClick={() => idRef.current?.click()}>
             {idFile ? (
-              <p className="upload-zone-file">📎 {idFile.name} · {(idFile.size / 1024).toFixed(0)} KB</p>
+              <p className="upload-zone-file" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Icon name="paperclip" size={15} /> {idFile.name} · {(idFile.size / 1024).toFixed(0)} KB
+              </p>
             ) : (
               <p className="upload-zone-text">Tap to upload · PDF, JPG, PNG</p>
             )}
@@ -131,17 +133,21 @@ export default function TeacherSignupStep2() {
 
         <div className="form-group">
           <label className="form-label">Brief Bio</label>
-          <textarea className="form-input form-textarea" placeholder="Describe your teaching style and background…" value={bio} onChange={(e) => setBio(e.target.value)} />
+          <textarea className="form-input form-textarea" placeholder="Describe your teaching style and background..." value={bio} onChange={(e) => setBio(e.target.value)} />
         </div>
 
         {state?.error && (
           <div className="notice notice-red">
-            <p>⚠ {state.error}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Icon name="alertTriangle" size={16} /> {state.error}
+            </p>
           </div>
         )}
 
         <div className="notice notice-amber">
-          <p>⏱ Your account activates only after document verification. This takes <strong>24–48 hours</strong>.</p>
+          <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Icon name="clock" size={16} /> Your account activates only after document verification. This takes <strong>24-48 hours</strong>.
+          </p>
         </div>
 
         <SubmitBtn disabled={!filled} />

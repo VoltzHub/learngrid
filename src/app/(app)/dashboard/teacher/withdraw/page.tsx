@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { Icon } from "@/components/Icons";
 
 export default function WithdrawPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -10,17 +11,19 @@ export default function WithdrawPage() {
     return (
       <>
         <div className="page-back-header">
-          <Link href="/dashboard/teacher/earnings" className="page-back-btn">←</Link>
+          <Link href="/dashboard/teacher/earnings" className="page-back-btn" aria-label="Back"><Icon name="arrowLeft" size={20} /></Link>
           <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>Withdraw</h2>
         </div>
         <div className="success-state">
-          <div className="success-icon" style={{ background: "var(--d-green-light)" }}>✅</div>
+          <div className="success-icon" style={{ background: "var(--d-green-light)", color: "var(--d-green)" }}>
+            <Icon name="check" size={30} />
+          </div>
           <h2 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Withdrawal Initiated</h2>
           <p style={{ fontSize: 13, color: "var(--d-gray-500)", lineHeight: 1.6, marginBottom: 6 }}>
             Your funds are being transferred via Paystack.
           </p>
           <p style={{ fontSize: 12, color: "var(--d-gray-400)", marginBottom: 24 }}>
-            Expect 1–3 business days processing time.
+            Expect 1-3 business days processing time.
           </p>
           <Link className="btn btn-primary btn-block" href="/dashboard/teacher/earnings">
             Back to Earnings
@@ -33,7 +36,7 @@ export default function WithdrawPage() {
   return (
     <>
       <div className="page-back-header">
-        <Link href="/dashboard/teacher/earnings" className="page-back-btn">←</Link>
+        <Link href="/dashboard/teacher/earnings" className="page-back-btn" aria-label="Back"><Icon name="arrowLeft" size={20} /></Link>
         <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>Withdraw Earnings</h2>
       </div>
 
@@ -44,7 +47,9 @@ export default function WithdrawPage() {
         </div>
 
         <div className="notice notice-amber">
-          <p>🚧 Paystack withdrawal integration coming soon. Your earnings are safe and tracked.</p>
+          <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Icon name="alertTriangle" size={16} /> Paystack withdrawal integration coming soon. Your earnings are safe and tracked.
+          </p>
         </div>
 
         <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>

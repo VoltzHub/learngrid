@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icons";
 
 export default function VerificationRejectedPage() {
-  // In a real flow, rejection reasons would come from the DB via searchParams or server component
   const reasons = [
     { field: "Teaching Qualification", message: "Document is expired or illegible. Upload a clear, valid certificate." },
     { field: "Government ID / NIN", message: "Photo does not match the uploaded ID. Re-upload a matching document." },
@@ -10,7 +10,9 @@ export default function VerificationRejectedPage() {
   return (
     <div style={{ padding: "28px 20px", maxWidth: 400, margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: 22 }}>
-        <div className="success-icon" style={{ background: "var(--d-red-light)" }}>❌</div>
+        <div className="success-icon" style={{ background: "var(--d-red-light)", color: "var(--d-red)" }}>
+          <Icon name="x" size={30} />
+        </div>
         <span className="status-badge badge-rejected">Not Verified</span>
         <h2 style={{ fontSize: 19, fontWeight: 700, margin: "14px 0 8px", letterSpacing: "-0.3px" }}>
           Verification Unsuccessful
@@ -31,8 +33,8 @@ export default function VerificationRejectedPage() {
       </div>
 
       <div style={{ background: "var(--d-gray-100)", borderRadius: 10, padding: "10px 12px", marginBottom: 20 }}>
-        <p style={{ fontSize: 12, color: "var(--d-gray-500)", lineHeight: 1.5, margin: 0 }}>
-          💡 No limit on re-applications. Fix the issues above and resubmit.
+        <p style={{ fontSize: 12, color: "var(--d-gray-500)", lineHeight: 1.5, margin: 0, display: "flex", gap: 8 }}>
+          <Icon name="alertTriangle" size={16} style={{ flexShrink: 0 }} /> No limit on re-applications. Fix the issues above and resubmit.
         </p>
       </div>
 

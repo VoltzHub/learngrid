@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
 import { getClassDetail } from "@/lib/actions/classes";
+import { Icon } from "@/components/Icons";
 import { PublishButton, CancelButton, DeleteButton } from "./actions-client";
 
 const BADGE: Record<string, string> = { DRAFT: "badge-draft", LISTED: "badge-listed", COMPLETED: "badge-completed", CANCELLED: "badge-cancelled" };
@@ -20,12 +21,11 @@ export default async function ClassDetailPage({ params }: { params: { id: string
   return (
     <>
       <div className="page-back-header">
-        <Link href="/dashboard/teacher/classes" className="page-back-btn">←</Link>
+        <Link href="/dashboard/teacher/classes" className="page-back-btn" aria-label="Back"><Icon name="arrowLeft" size={20} /></Link>
         <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>Class Detail</h2>
       </div>
 
       <div style={{ padding: "16px 18px" }}>
-        {/* Class info card */}
         <div style={{ background: "var(--d-gray-50)", border: "1px solid var(--d-gray-200)", borderRadius: 14, padding: 16, marginBottom: 16 }}>
           <div className="class-card-top">
             <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0, flex: 1, paddingRight: 8, lineHeight: 1.3 }}>{cls.title}</h3>
@@ -33,23 +33,24 @@ export default async function ClassDetailPage({ params }: { params: { id: string
           </div>
           {cls.description && <p style={{ fontSize: 13, color: "var(--d-gray-500)", margin: "6px 0 8px", lineHeight: 1.4 }}>{cls.description}</p>}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            <span style={{ fontSize: 12, color: "var(--d-gray-500)" }}>📅 {cls.scheduledAt.toLocaleDateString("en-NG", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span>
+            <span style={{ fontSize: 12, color: "var(--d-gray-500)", display: "inline-flex", alignItems: "center", gap: 5 }}>
+              <Icon name="calendar" size={14} /> {cls.scheduledAt.toLocaleDateString("en-NG", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+            </span>
             <span style={{ fontSize: 12, fontWeight: 700, color: "var(--d-blue)" }}>₦{cls.priceNgn.toLocaleString()}</span>
             <span style={{ fontSize: 12, color: "var(--d-gray-500)" }}>{cls._count.enrolments}/{cls.seatLimit} enrolled</span>
           </div>
         </div>
 
-        {/* Earnings breakdown for completed */}
         {cls.status === "COMPLETED" && cls._count.enrolments > 0 && (
           <div className="notice notice-green" style={{ textAlign: "left" }}>
             <p style={{ fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 10 }}>Earnings Breakdown</p>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-              <span style={{ fontSize: 13 }}>Gross ({cls._count.enrolments} × ₦{cls.priceNgn.toLocaleString()})</span>
+              <span style={{ fontSize: 13 }}>Gross ({cls._count.enrolments} x ₦{cls.priceNgn.toLocaleString()})</span>
               <span style={{ fontSize: 13, fontWeight: 700 }}>₦{gross.toLocaleString()}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
               <span style={{ fontSize: 13 }}>Platform fee ({feePercent}%)</span>
-              <span style={{ fontSize: 13 }}>–₦{fee.toLocaleString()}</span>
+              <span style={{ fontSize: 13 }}>-₦{fee.toLocaleString()}</span>
             </div>
             <div style={{ borderTop: "1px solid #A7F3D0", paddingTop: 8, display: "flex", justifyContent: "space-between" }}>
               <span style={{ fontSize: 14, fontWeight: 700 }}>Your earnings</span>
@@ -58,21 +59,21 @@ export default async function ClassDetailPage({ params }: { params: { id: string
           </div>
         )}
 
-        {/* Rating for completed */}
         {cls.status === "COMPLETED" && avgRating && (
           <div style={{ background: "var(--d-blue-light)", borderRadius: 14, padding: 14, marginBottom: 16 }}>
             <p style={{ fontSize: 10, fontWeight: 700, color: "var(--d-blue)", textTransform: "uppercase", letterSpacing: 0.4, margin: "0 0 8px" }}>Class Rating</p>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <p style={{ fontSize: 26, fontWeight: 700, margin: 0 }}>{avgRating}</p>
               <div>
-                <p style={{ margin: 0, fontSize: 14, color: "var(--d-amber)" }}>★★★★★</p>
+                <p style={{ margin: 0, color: "var(--d-amber)", display: "flex", gap: 2 }}>
+                  {Array.from({ length: 5 }).map((_, i) => <Icon key={i} name="star" size={14} />)}
+                </p>
                 <p style={{ margin: 0, fontSize: 12, color: "var(--d-gray-500)" }}>{cls.ratings.length} of {cls._count.enrolments} students rated</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Enrolled students */}
         {(cls.status === "LISTED" || cls.status === "COMPLETED") && cls.enrolments.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
@@ -93,12 +94,11 @@ export default async function ClassDetailPage({ params }: { params: { id: string
           </div>
         )}
 
-        {/* Action buttons */}
         {cls.status === "DRAFT" && (
           <div style={{ paddingBottom: 24 }}>
             <PublishButton classId={cls.id} />
             <div className="btn-row" style={{ marginTop: 10 }}>
-              <Link className="btn btn-secondary" href={`/dashboard/teacher/classes/new`} style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
+              <Link className="btn btn-secondary" href="/dashboard/teacher/classes/new" style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
               <DeleteButton classId={cls.id} />
             </div>
           </div>
@@ -107,7 +107,7 @@ export default async function ClassDetailPage({ params }: { params: { id: string
           <div style={{ paddingBottom: 24 }}>
             <button className="btn btn-success btn-block" style={{ marginBottom: 10 }}>Start Class</button>
             <div className="btn-row">
-              <Link className="btn btn-secondary" href={`/dashboard/teacher/classes/new`} style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
+              <Link className="btn btn-secondary" href="/dashboard/teacher/classes/new" style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
               <CancelButton classId={cls.id} />
             </div>
           </div>

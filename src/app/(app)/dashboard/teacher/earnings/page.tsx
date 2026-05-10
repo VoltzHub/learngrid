@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { getTeacherStats, getTeacherEarnings } from "@/lib/actions/earnings";
+import { Icon } from "@/components/Icons";
+import { TeacherBottomNav } from "@/components/TeacherBottomNav";
 
 export default async function EarningsPage() {
   const profile = await requireProfile();
@@ -22,7 +24,7 @@ export default async function EarningsPage() {
 
       {!hasEarnings ? (
         <div className="empty-state">
-          <div className="empty-state-icon">💰</div>
+          <div className="empty-state-icon"><Icon name="money" size={40} /></div>
           <p className="empty-state-title">No earnings yet</p>
           <p className="empty-state-desc">Complete your first class to earn. Payments release 24 hours after class ends.</p>
           <Link className="btn btn-primary btn-block" href="/dashboard/teacher/classes/new">Create a Class</Link>
@@ -57,7 +59,7 @@ export default async function EarningsPage() {
           {earnings.map((e) => (
             <div key={e.id} className="earning-item">
               <div className={`earning-icon ${e.status === "PENDING_RELEASE" ? "earning-pending" : "earning-released"}`}>
-                {e.status === "PENDING_RELEASE" ? "⏳" : "✅"}
+                <Icon name={e.status === "PENDING_RELEASE" ? "clock" : "check"} size={18} style={{ color: e.status === "PENDING_RELEASE" ? "var(--d-amber)" : "var(--d-green)" }} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p className="earning-class">{e.class.title}</p>
@@ -75,13 +77,7 @@ export default async function EarningsPage() {
       )}
 
       <div style={{ marginTop: "auto" }} />
-      <nav className="bottom-nav">
-        <Link href="/dashboard/teacher" className="bottom-nav-item"><span className="bottom-nav-icon">⊞</span><span className="bottom-nav-label">Home</span></Link>
-        <Link href="/dashboard/teacher/classes" className="bottom-nav-item"><span className="bottom-nav-icon">☰</span><span className="bottom-nav-label">Classes</span></Link>
-        <div className="bottom-nav-fab"><Link href="/dashboard/teacher/classes/new" className="bottom-nav-fab-btn">+</Link></div>
-        <Link href="/dashboard/teacher/earnings" className="bottom-nav-item active"><span className="bottom-nav-icon">₦</span><span className="bottom-nav-label">Earn</span></Link>
-        <Link href="/dashboard/teacher/profile" className="bottom-nav-item"><span className="bottom-nav-icon">◉</span><span className="bottom-nav-label">Profile</span></Link>
-      </nav>
+      <TeacherBottomNav active="earnings" />
     </>
   );
 }
