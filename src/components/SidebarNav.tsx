@@ -4,8 +4,8 @@ import { signOut } from "@/lib/actions/auth";
 
 const STUDENT_LINKS = [
   { href: "/dashboard/student", label: "Overview" },
-  { href: "/dashboard/student/classes", label: "My classes" },
-  { href: "/classes", label: "Browse classes" },
+  { href: "/dashboard/student/classes", label: "My Classes" },
+  { href: "/classes", label: "Browse Classes" },
 ];
 
 const TEACHER_LINKS = [

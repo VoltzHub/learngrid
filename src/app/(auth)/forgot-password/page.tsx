@@ -12,10 +12,22 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // In production, call supabase.auth.resetPasswordForEmail(email)
-    await new Promise((r) => setTimeout(r, 1000));
-    setSent(true);
-    setLoading(false);
+    try {
+      const { createBrowserClient } = await import("@supabase/ssr");
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      });
+      setSent(true);
+    } catch {
+      // Silently handle — still show success to prevent email enumeration
+      setSent(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (sent) {

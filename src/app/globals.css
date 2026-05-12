@@ -1986,3 +1986,385 @@ summary:focus-visible {
     align-items: center;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   MARKETPLACE PAGE
+   ═══════════════════════════════════════════════ */
+.marketplace-section { padding-top: 48px; }
+.marketplace-header { max-width: 680px; margin-bottom: 40px; }
+.marketplace-title {
+  font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.15; margin: 4px 0 12px;
+}
+.marketplace-subtitle {
+  font-size: 1.05rem; color: var(--muted); line-height: 1.6; margin: 0;
+}
+.marketplace-filters {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px;
+}
+.filter-chip {
+  padding: 8px 18px; border-radius: 999px; font-size: 0.85rem;
+  font-weight: 600; border: 1.5px solid var(--border); background: #fff;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  transition: all 0.2s ease;
+}
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+.filter-chip.active {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(30, 87, 216, 0.2);
+}
+
+.marketplace-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* ─── Marketplace Card ─── */
+.mkt-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 18px;
+  padding: 22px 24px; text-decoration: none; color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.mkt-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--success));
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.mkt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08), 0 8px 16px rgba(30, 87, 216, 0.06);
+  border-color: rgba(30, 87, 216, 0.2);
+}
+.mkt-card:hover::before { opacity: 1; }
+
+.mkt-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.mkt-card-subject {
+  padding: 4px 12px; border-radius: 999px; font-size: 0.75rem;
+  font-weight: 700; background: rgba(30, 87, 216, 0.08); color: var(--primary);
+  letter-spacing: 0.02em;
+}
+.mkt-card-full {
+  padding: 4px 10px; border-radius: 999px; font-size: 0.7rem;
+  font-weight: 700; background: rgba(239, 68, 68, 0.08); color: #ef4444;
+}
+.mkt-card-hot {
+  padding: 4px 10px; border-radius: 999px; font-size: 0.7rem;
+  font-weight: 700; background: rgba(217, 119, 6, 0.08); color: #d97706;
+  animation: pulse-badge 2s infinite;
+}
+@keyframes pulse-badge { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+.mkt-card-title {
+  font-size: 1.05rem; font-weight: 700; margin: 0 0 12px;
+  line-height: 1.3; letter-spacing: -0.01em;
+}
+.mkt-card-teacher {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  font-size: 0.85rem; color: var(--muted); font-weight: 500;
+}
+.mkt-card-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.65rem; font-weight: 800; flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.mkt-card-avatar.lg { width: 44px; height: 44px; font-size: 0.8rem; }
+.mkt-card-meta {
+  display: flex; gap: 16px; margin-bottom: 16px;
+}
+.mkt-card-meta-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.8rem; color: var(--muted);
+}
+.mkt-card-meta-item svg { flex-shrink: 0; color: #94a3b8; }
+.mkt-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 14px; border-top: 1px solid #f1f5f9;
+  margin-top: auto;
+}
+.mkt-card-price {
+  font-size: 1.1rem; font-weight: 800; color: var(--primary);
+  letter-spacing: -0.02em;
+}
+.mkt-card-seats { font-size: 0.8rem; color: var(--muted); }
+
+.marketplace-empty {
+  text-align: center; padding: 80px 20px; max-width: 440px; margin: 0 auto;
+}
+.marketplace-empty-icon {
+  color: #94a3b8; margin-bottom: 16px;
+  display: inline-flex;
+}
+.marketplace-empty h3 { font-size: 1.3rem; margin: 0 0 8px; }
+.marketplace-empty p {
+  font-size: 1rem; color: var(--muted); line-height: 1.6; margin: 0 0 24px;
+}
+
+/* ═══════════════════════════════════════════════
+   CLASS DETAIL PAGE
+   ═══════════════════════════════════════════════ */
+.class-detail-section { padding-top: 24px; }
+.class-detail-layout { max-width: 1100px; }
+.breadcrumb {
+  margin-bottom: 20px;
+}
+.breadcrumb a {
+  font-size: 0.9rem; color: var(--primary); font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+.breadcrumb a:hover { opacity: 0.7; }
+.class-detail-grid {
+  display: grid; grid-template-columns: 1fr 380px; gap: 40px;
+  align-items: flex-start;
+}
+.class-detail-main {}
+.class-detail-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.class-detail-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 20px;
+}
+
+.class-detail-teacher {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; background: #f8fafc;
+  border: 1px solid var(--border); border-radius: 16px;
+  margin-bottom: 28px;
+}
+.teacher-name {
+  font-size: 0.95rem; font-weight: 700; margin: 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.verified-tick { color: var(--success); display: inline-flex; }
+.teacher-bio {
+  font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; line-height: 1.5;
+}
+
+.class-detail-desc { margin-bottom: 28px; }
+.class-detail-desc h3 {
+  font-size: 1rem; font-weight: 700; margin: 0 0 10px;
+}
+.class-detail-desc p {
+  font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin: 0;
+}
+
+.class-detail-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  margin-bottom: 32px;
+}
+.info-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px; background: #f8fafc; border-radius: 14px;
+  border: 1px solid #f1f5f9;
+}
+.info-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: rgba(30, 87, 216, 0.08); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.info-label { font-size: 0.75rem; color: var(--muted); margin: 0 0 2px; font-weight: 600; }
+.info-value { font-size: 0.9rem; font-weight: 700; margin: 0; }
+
+/* Reviews */
+.class-detail-reviews { margin-bottom: 32px; }
+.class-detail-reviews h3 { font-size: 1rem; font-weight: 700; margin: 0 0 14px; }
+.reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.review-card {
+  background: #f8fafc; border-radius: 14px; padding: 16px;
+  border: 1px solid #f1f5f9;
+}
+.review-stars { display: flex; gap: 2px; margin-bottom: 8px; }
+.review-text { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin: 0 0 8px; }
+.review-author { font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin: 0; }
+
+/* Enrol Sidebar */
+.class-detail-sidebar { position: sticky; top: 100px; }
+.enrol-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 20px;
+  padding: 28px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+.enrol-price { text-align: center; margin-bottom: 20px; }
+.enrol-price-amount {
+  font-size: 2rem; font-weight: 800; color: var(--text);
+  letter-spacing: -0.03em; display: block;
+}
+.enrol-price-label { font-size: 0.8rem; color: var(--muted); }
+.enrol-meta { display: grid; gap: 10px; margin-bottom: 20px; }
+.enrol-meta-row {
+  display: flex; align-items: center; gap: 10px; font-size: 0.85rem;
+  color: var(--muted); padding: 8px 12px; background: #f8fafc;
+  border-radius: 10px;
+}
+.enrol-meta-row svg { color: #94a3b8; flex-shrink: 0; }
+.enrol-btn {
+  position: relative; overflow: hidden;
+}
+.enrol-btn::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 0; height: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+.enrol-btn:hover::after { width: 300px; height: 300px; }
+.enrol-enrolled {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 14px; background: var(--d-green-light);
+  border-radius: 12px; font-size: 0.9rem; font-weight: 600;
+  color: var(--d-green); margin-bottom: 12px;
+}
+.enrol-error {
+  font-size: 0.8rem; color: var(--d-red); text-align: center;
+  margin: 8px 0 0;
+}
+.enrol-trust {
+  display: grid; gap: 8px; margin-top: 16px;
+  padding-top: 16px; border-top: 1px solid #f1f5f9;
+}
+.enrol-trust-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; color: var(--muted);
+}
+.enrol-trust-item svg { color: var(--success); flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════
+   STUDENT DASHBOARD
+   ═══════════════════════════════════════════════ */
+.student-avatar {
+  background: linear-gradient(135deg, var(--success), #10b981) !important;
+}
+.dash-user-role {
+  font-size: 11px; color: var(--d-gray-500); margin: 0;
+}
+.dash-greeting {
+  font-size: 19px; font-weight: 700; margin: 0 0 4px;
+}
+.dash-greeting-sub {
+  font-size: 13px; color: var(--d-gray-500); margin: 0 0 16px;
+}
+.section-title-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px;
+}
+.section-title { font-size: 14px; font-weight: 700; margin: 0; }
+.section-link { font-size: 13px; color: var(--d-blue); font-weight: 600; text-decoration: none; }
+.class-card-teacher-name { font-size: 12px; color: var(--d-gray-500); }
+.class-card-date-small { font-size: 11px; color: var(--d-gray-500); }
+
+/* ═══════════════════════════════════════════════
+   STAR RATING INPUT
+   ═══════════════════════════════════════════════ */
+.star-rating-input {
+  display: inline-flex; gap: 4px;
+}
+.star-btn {
+  background: none; border: none; cursor: pointer; padding: 4px;
+  color: #e2e8f0; transition: color 0.15s ease, transform 0.15s ease;
+}
+.star-btn:hover { transform: scale(1.15); }
+.star-btn.active { color: #f59e0b; }
+
+/* ═══════════════════════════════════════════════
+   SESSION LINK FORM
+   ═══════════════════════════════════════════════ */
+.session-link-form {
+  background: var(--d-blue-light); border-radius: 12px; padding: 14px;
+  margin-bottom: 4px;
+}
+.session-link-form .form-label { color: var(--d-blue); margin-bottom: 8px; }
+
+/* ═══════════════════════════════════════════════
+   GOD-TIER POLISH — Micro-animations & Refinements
+   ═══════════════════════════════════════════════ */
+
+/* Smooth page transitions */
+.dash-main { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Stat cards hover */
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+}
+
+/* Class cards subtle animation */
+.class-card { transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.class-card:hover { transform: translateY(-2px); }
+
+/* Button ripple refinement */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: rgba(255,255,255,0.1); opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.btn:active::after { opacity: 1; }
+
+/* Sidebar glow */
+.dash-sidebar {
+  background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
+}
+.dash-nav a {
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.dash-nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Bottom nav smooth */
+.bottom-nav {
+  position: sticky; bottom: 0; z-index: 20;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
+}
+.bottom-nav-item { transition: color 0.15s ease; }
+
+/* Form inputs glow on focus */
+.form-input:focus {
+  border-color: var(--d-blue);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.1), 0 2px 8px rgba(26,86,219,0.06);
+}
+
+/* Enrol card shadow animation */
+.enrol-card {
+  transition: box-shadow 0.3s ease;
+}
+.enrol-card:hover {
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+}
+
+/* Auth container (for forgot password etc) */
+.auth-container {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 60vh; padding: 40px 16px;
+}
+.auth-container .auth-card {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   CLASS DETAIL RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .class-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .class-detail-sidebar {
+    position: static;
+  }
+  .class-detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .marketplace-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

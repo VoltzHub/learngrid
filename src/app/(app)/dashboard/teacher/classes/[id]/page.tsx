@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
 import { getClassDetail } from "@/lib/actions/classes";
 import { Icon } from "@/components/Icons";
-import { PublishButton, CancelButton, DeleteButton } from "./actions-client";
+import { PublishButton, CancelButton, DeleteButton, SessionLinkForm, CompleteClassButton } from "./actions-client";
 
 const BADGE: Record<string, string> = { DRAFT: "badge-draft", LISTED: "badge-listed", COMPLETED: "badge-completed", CANCELLED: "badge-cancelled" };
 
@@ -105,10 +105,13 @@ export default async function ClassDetailPage({ params }: { params: { id: string
         )}
         {cls.status === "LISTED" && (
           <div style={{ paddingBottom: 24 }}>
-            <button className="btn btn-success btn-block" style={{ marginBottom: 10 }}>Start Class</button>
-            <div className="btn-row">
-              <Link className="btn btn-secondary" href="/dashboard/teacher/classes/new" style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
-              <CancelButton classId={cls.id} />
+            <SessionLinkForm classId={cls.id} currentLink={cls.sessionLink} />
+            <div style={{ marginTop: 14 }}>
+              <CompleteClassButton classId={cls.id} />
+              <div className="btn-row">
+                <Link className="btn btn-secondary" href="/dashboard/teacher/classes/new" style={{ flex: 1, textAlign: "center" }}>Edit Class</Link>
+                <CancelButton classId={cls.id} />
+              </div>
             </div>
           </div>
         )}
