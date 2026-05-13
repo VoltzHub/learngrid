@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getListedClasses } from "@/lib/actions/classes";
 
+export const dynamic = "force-dynamic";
+
 export default async function ClassesPage({
   searchParams,
 }: {

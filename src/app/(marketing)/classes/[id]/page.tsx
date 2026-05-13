@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { EnrolButton } from "./EnrolButton";
 import { getEnrolmentStatus } from "@/lib/actions/enrolment";
 
+export const dynamic = "force-dynamic";
+
 export default async function ClassDetailPage({
   params,
   searchParams,
