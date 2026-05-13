@@ -26,9 +26,6 @@ export default async function StudentClassesPage() {
     (e) => e.class.scheduledAt > now && e.class.status !== "COMPLETED" && e.class.status !== "CANCELLED"
   );
   const completed = enrolments.filter((e) => e.class.status === "COMPLETED");
-  const other = enrolments.filter(
-    (e) => !upcoming.includes(e) && !completed.includes(e)
-  );
 
   return (
     <>
