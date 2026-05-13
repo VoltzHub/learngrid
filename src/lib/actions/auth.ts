@@ -76,7 +76,15 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
 
   if (error) return { error: error.message };
 
-  const profile = await prisma.profile.findUnique({ where: { id: data.user.id } });
+  let profile = await prisma.profile.findUnique({ where: { id: data.user.id } });
+  if (!profile) {
+    await ensureProfileForUser(
+      data.user.id,
+      data.user.email!,
+      data.user.user_metadata ?? {},
+    );
+    profile = await prisma.profile.findUnique({ where: { id: data.user.id } });
+  }
   redirect(profile ? dashboardPathFor(profile.role) : "/");
 }
 
