@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { Role } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { dashboardPathFor } from "@/lib/auth";
@@ -100,17 +100,34 @@ export async function ensureProfileForUser(userId: string, email: string, metada
   const role: Role =
     rawRole === "TEACHER" || rawRole === "ADMIN" ? (rawRole as Role) : Role.STUDENT;
 
-  await prisma.profile.upsert({
-    where: { id: userId },
-    create: {
-      id: userId,
-      email,
-      fullName: typeof metadata.full_name === "string" ? metadata.full_name : null,
-      phone: typeof metadata.phone === "string" ? metadata.phone : null,
-      role,
-    },
-    update: {},
-  });
+  const existingById = await prisma.profile.findUnique({ where: { id: userId } });
+  if (!existingById) {
+    const orphan = await prisma.profile.findUnique({ where: { email } });
+    if (orphan) {
+      // Auth user was deleted and recreated under a new UUID; the old Profile row
+      // still owns the email. Reclaim it if it has no dependent data, otherwise
+      // surface a clear error instead of the cryptic unique-constraint failure.
+      try {
+        await prisma.profile.delete({ where: { id: orphan.id } });
+      } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2003") {
+          throw new Error(
+            "This email is already linked to an account with existing activity. Contact support to reconcile.",
+          );
+        }
+        throw err;
+      }
+    }
+    await prisma.profile.create({
+      data: {
+        id: userId,
+        email,
+        fullName: typeof metadata.full_name === "string" ? metadata.full_name : null,
+        phone: typeof metadata.phone === "string" ? metadata.phone : null,
+        role,
+      },
+    });
+  }
 
   if (role === Role.TEACHER) {
     const subjectTags = typeof metadata.subject === "string" && metadata.subject
