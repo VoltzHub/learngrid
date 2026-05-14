@@ -1,10 +1,34 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { EnrolButton } from "./EnrolButton";
 import { getEnrolmentStatus } from "@/lib/actions/enrolment";
+import { getClassCover } from "@/lib/classCovers";
+import { Avatar } from "@/components/Avatar";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const cls = await prisma.class.findUnique({
+    where: { id: params.id },
+    select: { title: true, subject: true, priceNgn: true, teacher: { select: { fullName: true } } },
+  });
+  if (!cls) return { title: "Class not found" };
+
+  const title = cls.title;
+  const description = `${cls.subject} · Live class with ${cls.teacher.fullName ?? "a verified LearnGrid teacher"} · ₦${cls.priceNgn.toLocaleString()} per student.`;
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "article" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default async function ClassDetailPage({
   params,
@@ -56,12 +80,7 @@ export default async function ClassDetailPage({
     minute: "2-digit",
   });
 
-  const teacherInitials = cls.teacher.fullName
-    ?.split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase() ?? "?";
+  const cover = getClassCover({ coverImageUrl: cls.coverImageUrl, subject: cls.subject });
 
   return (
     <section className="section class-detail-section">
@@ -70,6 +89,12 @@ export default async function ClassDetailPage({
         <nav className="breadcrumb" aria-label="Breadcrumb">
           <Link href="/classes">← All Classes</Link>
         </nav>
+
+        <div className="class-detail-hero">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={cover} alt="" />
+          <div className="class-detail-hero-overlay" />
+        </div>
 
         <div className="class-detail-grid">
           {/* Main content */}
@@ -91,9 +116,7 @@ export default async function ClassDetailPage({
 
             {/* Teacher card */}
             <div className="class-detail-teacher">
-              <div className="mkt-card-avatar lg">
-                {teacherInitials}
-              </div>
+              <Avatar name={cls.teacher.fullName} imageUrl={cls.teacher.avatarUrl} size={48} />
               <div>
                 <p className="teacher-name">
                   {cls.teacher.fullName ?? "Teacher"}

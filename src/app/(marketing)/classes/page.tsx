@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getListedClasses } from "@/lib/actions/classes";
+import { getClassCover } from "@/lib/classCovers";
+import { Avatar } from "@/components/Avatar";
 
 export const dynamic = "force-dynamic";
 
@@ -90,50 +92,49 @@ export default async function ClassesPage({
                 hour: "numeric",
                 minute: "2-digit",
               });
+              const cover = getClassCover({ coverImageUrl: cls.coverImageUrl, subject: cls.subject });
               return (
                 <Link
                   key={cls.id}
                   href={`/classes/${cls.id}`}
                   className="mkt-card"
                 >
-                  <div className="mkt-card-header">
-                    <span className="mkt-card-subject">{cls.subject}</span>
-                    {isFull && <span className="mkt-card-full">Full</span>}
+                  <div className="mkt-card-cover">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={cover} alt="" loading="lazy" />
+                    <div className="mkt-card-cover-overlay" />
+                    <span className="mkt-card-cover-chip">{cls.subject}</span>
+                    {isFull && <span className="mkt-card-cover-tag full">Full</span>}
                     {!isFull && seatsLeft <= 5 && (
-                      <span className="mkt-card-hot">
-                        {seatsLeft} seat{seatsLeft !== 1 ? "s" : ""} left
+                      <span className="mkt-card-cover-tag hot">
+                        {seatsLeft} left
                       </span>
                     )}
                   </div>
-                  <h3 className="mkt-card-title">{cls.title}</h3>
-                  <div className="mkt-card-teacher">
-                    <div className="mkt-card-avatar">
-                      {cls.teacher.fullName
-                        ?.split(" ")
-                        .map((w) => w[0])
-                        .join("")
-                        .slice(0, 2)
-                        .toUpperCase() ?? "?"}
+                  <div className="mkt-card-body">
+                    <h3 className="mkt-card-title">{cls.title}</h3>
+                    <div className="mkt-card-teacher">
+                      <Avatar name={cls.teacher.fullName} size={32} />
+                      <span>{cls.teacher.fullName ?? "Teacher"}</span>
                     </div>
-                    <span>{cls.teacher.fullName ?? "Teacher"}</span>
-                  </div>
-                  <div className="mkt-card-meta">
-                    <div className="mkt-card-meta-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" /></svg>
-                      {dateStr}
+                    <div className="mkt-card-meta">
+                      <div className="mkt-card-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" /></svg>
+                        {dateStr}
+                      </div>
+                      <div className="mkt-card-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14"><path d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z" /></svg>
+                        {timeStr} · {cls.durationMinutes}min
+                      </div>
                     </div>
-                    <div className="mkt-card-meta-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14"><path d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z" /></svg>
-                      {timeStr} · {cls.durationMinutes}min
+                    <div className="mkt-card-footer">
+                      <span className="mkt-card-price">
+                        ₦{cls.priceNgn.toLocaleString()}
+                      </span>
+                      <span className="mkt-card-seats">
+                        {cls._count.enrolments}/{cls.seatLimit} enrolled
+                      </span>
                     </div>
-                  </div>
-                  <div className="mkt-card-footer">
-                    <span className="mkt-card-price">
-                      ₦{cls.priceNgn.toLocaleString()}
-                    </span>
-                    <span className="mkt-card-seats">
-                      {cls._count.enrolments}/{cls.seatLimit} enrolled
-                    </span>
                   </div>
                 </Link>
               );

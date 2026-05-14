@@ -21,6 +21,7 @@ const ADMIN_LINKS = [
   { href: "/dashboard/admin/verifications", label: "Verifications" },
   { href: "/dashboard/admin/classes", label: "Classes" },
   { href: "/dashboard/admin/payouts", label: "Payouts" },
+  { href: "/dashboard/admin/users", label: "Users" },
 ];
 
 export function SidebarNav({ role, fullName }: { role: Role; fullName: string | null }) {

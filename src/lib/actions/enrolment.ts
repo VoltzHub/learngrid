@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { ClassStatus, EnrolmentStatus, PaymentStatus, EarningStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireProfile } from "@/lib/auth";
+import { createNotification } from "@/lib/notifications";
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!;
 const FEE_PERCENT = parseInt(process.env.PLATFORM_FEE_PERCENT ?? "15");
@@ -170,6 +171,17 @@ export async function verifyAndEnrol(reference: string): Promise<EnrolResult> {
       },
     }),
   ]);
+
+  await createNotification(payment.class.teacherId, "enrollment", {
+    title: "New student enrolled",
+    message: `Someone just enrolled in "${payment.class.title}".`,
+    classId: payment.classId,
+  });
+  await createNotification(profile.id, "enrollment", {
+    title: "You're enrolled!",
+    message: `You're in for "${payment.class.title}". We'll send the join link before class.`,
+    classId: payment.classId,
+  });
 
   revalidatePath(`/classes/${payment.classId}`);
   revalidatePath("/dashboard/student");

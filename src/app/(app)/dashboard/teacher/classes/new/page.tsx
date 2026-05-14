@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { createClass, type ClassFormState } from "@/lib/actions/classes";
 import { Icon } from "@/components/Icons";
+import { PRICE_TIERS } from "@/lib/pricing";
 
 function SubmitBtn({ label, disabled }: { label: string; disabled?: boolean }) {
   const { pending } = useFormStatus();
@@ -83,12 +84,18 @@ export default function CreateClassPage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Price (₦) <span className="required">*</span></label>
-            <div className="form-price-wrap">
-              <div className="form-price-prefix">₦</div>
-              <input className="form-input" type="number" name="priceNgn" placeholder="Amount in Naira" required min={100} />
-            </div>
-            <p className="form-hint">You keep 85% · LearnGrid fee: 15%</p>
+            <label className="form-label">Price Tier <span className="required">*</span></label>
+            <select className="form-input" name="priceNgn" aria-label="Price tier" required defaultValue="">
+              <option value="" disabled>Choose a LearnGrid price tier…</option>
+              {PRICE_TIERS.map((t) => (
+                <option key={t.id} value={t.priceNgn}>
+                  {t.label} — {t.description}
+                </option>
+              ))}
+            </select>
+            <p className="form-hint">
+              Prices are set by LearnGrid for marketplace consistency. You keep 85% · LearnGrid fee: 15%.
+            </p>
           </div>
 
           <div className="form-group">
@@ -99,6 +106,19 @@ export default function CreateClassPage() {
           <div className="form-group">
             <label className="form-label">Description</label>
             <textarea className="form-input form-textarea" name="description" placeholder="Describe what students will learn..." />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Cover Image URL (optional)</label>
+            <input
+              className="form-input"
+              type="url"
+              name="coverImageUrl"
+              placeholder="https://images.unsplash.com/..."
+            />
+            <p className="form-hint">
+              Leave blank to use a default cover for your subject.
+            </p>
           </div>
 
           {state?.error && (

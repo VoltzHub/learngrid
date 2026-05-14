@@ -6,6 +6,7 @@ import { z } from "zod";
 import { ClassStatus, VerificationStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireProfile } from "@/lib/auth";
+import { ALLOWED_PRICES } from "@/lib/pricing";
 
 const createClassSchema = z.object({
   title: z.string().min(3, "Class title is required."),
@@ -15,7 +16,15 @@ const createClassSchema = z.object({
   startTime: z.string().min(1, "Start time is required."),
   durationMinutes: z.coerce.number().min(15, "Duration must be at least 15 minutes."),
   seatLimit: z.coerce.number().min(1, "At least 1 seat required."),
-  priceNgn: z.coerce.number().min(100, "Minimum price is ₦100."),
+  // R-PY: prices are platform-set, not teacher-set. Reject anything outside the tier list.
+  priceNgn: z.coerce.number().refine((p) => ALLOWED_PRICES.includes(p), {
+    message: "Select a valid LearnGrid price tier.",
+  }),
+  coverImageUrl: z
+    .string()
+    .url("Cover image must be a valid URL.")
+    .optional()
+    .or(z.literal("")),
 });
 
 export type ClassFormState = { error?: string; success?: boolean } | undefined;
@@ -42,6 +51,7 @@ export async function createClass(
     durationMinutes: formData.get("durationMinutes"),
     seatLimit: formData.get("seatLimit"),
     priceNgn: formData.get("priceNgn"),
+    coverImageUrl: formData.get("coverImageUrl") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -61,6 +71,7 @@ export async function createClass(
       title: rest.title,
       subject: rest.subject,
       description: rest.description ?? null,
+      coverImageUrl: rest.coverImageUrl ? rest.coverImageUrl : null,
       scheduledAt: dateTime,
       durationMinutes: rest.durationMinutes,
       seatLimit: rest.seatLimit,

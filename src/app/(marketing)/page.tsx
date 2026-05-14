@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getLandingStats } from "@/lib/actions/stats";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const stats = await getLandingStats();
   return (
     <>
       {/* HERO */}
@@ -55,15 +59,15 @@ export default function HomePage() {
 
             <div className="hero-stats" aria-label="LearnGrid impact">
               <div className="stat">
-                <strong>5,000+</strong>
+                <strong>{stats.students.toLocaleString()}+</strong>
                 <span>Active Students</span>
               </div>
               <div className="stat">
-                <strong>500+</strong>
+                <strong>{stats.verifiedTeachers.toLocaleString()}+</strong>
                 <span>Verified Teachers</span>
               </div>
               <div className="stat">
-                <strong>10,000+</strong>
+                <strong>{stats.classesCompleted.toLocaleString()}+</strong>
                 <span>Classes Completed</span>
               </div>
             </div>
@@ -91,7 +95,7 @@ export default function HomePage() {
                 </div>
                 <div className="profile-footer">
                   <div className="stars">★★★★★</div>
-                  <span className="price accent-green">₦ 45/week</span>
+                  <span className="price accent-green">₦1,500 / class</span>
                 </div>
               </div>
 
@@ -108,7 +112,7 @@ export default function HomePage() {
                   <div className="stars">
                     <span className="red-dot"></span>★★★★★
                   </div>
-                  <span className="price accent-green">₦ 45/week</span>
+                  <span className="price accent-green">₦1,500 / class</span>
                 </div>
               </div>
             </div>
@@ -294,11 +298,11 @@ export default function HomePage() {
               </div>
             </div>
             <div className="pricing-card-right">
-              <Link className="btn btn-primary btn-block" href="/signup">
-                Start Your Free Trial
+              <Link className="btn btn-primary btn-block" href="/classes">
+                Browse Classes from ₦500
               </Link>
-              <Link href="/pricing" className="pricing-link">
-                View full pricing structure
+              <Link href="/signup?role=teacher" className="pricing-link">
+                Or start teaching →
               </Link>
             </div>
           </div>

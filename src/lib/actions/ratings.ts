@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireProfile } from "@/lib/auth";
+import { createNotification } from "@/lib/notifications";
 
 const ratingSchema = z.object({
   classId: z.string().uuid(),
@@ -63,7 +64,16 @@ export async function submitRating(
     },
   });
 
+  await createNotification(enrolment.class.teacherId, "rating", {
+    title: `New ${stars}★ review`,
+    message: comment
+      ? `"${comment.slice(0, 80)}${comment.length > 80 ? "…" : ""}"`
+      : `A student rated "${enrolment.class.title}" ${stars} stars.`,
+    classId,
+  });
+
   revalidatePath(`/dashboard/student/classes`);
   revalidatePath(`/classes/${classId}`);
+  revalidatePath(`/dashboard/teacher/notifications`);
   return { success: true };
 }

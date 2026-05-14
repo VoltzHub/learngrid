@@ -9,10 +9,31 @@ const manrope = Manrope({
   variable: "--font-manrope",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://learngrid-ten.vercel.app";
+
 export const metadata: Metadata = {
-  title: "LearnGrid — Teach live. Learn live. Earn in Naira.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "LearnGrid — Teach Live. Learn Live. Earn in Naira.",
+    template: "%s · LearnGrid",
+  },
   description:
     "LearnGrid helps verified Nigerian teachers host live classes and get paid securely in Naira while students learn in real time.",
+  openGraph: {
+    type: "website",
+    siteName: "LearnGrid",
+    locale: "en_NG",
+    title: "LearnGrid — Teach Live. Learn Live. Earn in Naira.",
+    description:
+      "Nigeria's live learning marketplace. Verified teachers, secure Paystack payments, real-time classes.",
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LearnGrid — Teach Live. Learn Live. Earn in Naira.",
+    description:
+      "Nigeria's live learning marketplace. Verified teachers, secure Paystack payments, real-time classes.",
+  },
 };
 
 export default function RootLayout({

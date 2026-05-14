@@ -109,6 +109,7 @@ model Class {
   title           String
   subject         String
   description     String?
+  coverImageUrl   String?
   scheduledAt     DateTime
   durationMinutes Int
   seatLimit       Int
