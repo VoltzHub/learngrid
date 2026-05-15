@@ -48,7 +48,7 @@ export default async function AdminPayoutsPage() {
   }
 
   return (
-    <div style={{ padding: 24, maxWidth: 1000, margin: "0 auto" }}>
+    <div style={{ padding: 24, maxWidth: 1400 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Payouts</h1>
       <p style={{ color: "var(--muted)", marginBottom: 18, fontSize: 13 }}>
         Teacher payout requests. Mark as paid once the bank transfer clears via Paystack Transfers.

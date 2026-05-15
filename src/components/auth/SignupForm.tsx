@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { signUp, type AuthFormState } from "@/lib/actions/auth";
 
 function SubmitButton({ label }: { label: string }) {
@@ -14,7 +15,7 @@ function SubmitButton({ label }: { label: string }) {
 }
 
 export function SignupForm({ role }: { role: "STUDENT" | "TEACHER" }) {
-  const [state, formAction] = useFormState<AuthFormState, FormData>(signUp, undefined);
+  const [state, formAction] = useActionState<AuthFormState, FormData>(signUp, undefined);
 
   const heading = role === "TEACHER" ? "Create your teacher account" : "Create your student account";
   const lead =

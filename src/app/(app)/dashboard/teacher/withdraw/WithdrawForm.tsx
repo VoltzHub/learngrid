@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { Icon } from "@/components/Icons";
 import { requestWithdrawal, type WithdrawState } from "@/lib/actions/payouts";
 
@@ -47,7 +48,7 @@ export function WithdrawForm({
   defaultBankCode: string;
   defaultAccountName: string;
 }) {
-  const [state, formAction] = useFormState<WithdrawState, FormData>(requestWithdrawal, undefined);
+  const [state, formAction] = useActionState<WithdrawState, FormData>(requestWithdrawal, undefined);
 
   if (state?.success) {
     return (

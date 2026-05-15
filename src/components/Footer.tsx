@@ -9,6 +9,7 @@ export function Footer() {
         <div>
           <Link className="brand footer-brand" href="/">
             <span className="brand-mark" aria-hidden="true">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/logo-cap.svg" alt="" />
             </span>
             <span className="brand-text">LearnGrid</span>
@@ -31,7 +32,7 @@ export function Footer() {
               <Link href="/#pricing">Class Pricing</Link>
             </li>
             <li>
-              <a href="#stories">Success Stories</a>
+              <Link href="/#trust">Why Teachers Love Us</Link>
             </li>
           </ul>
         </div>
@@ -39,23 +40,23 @@ export function Footer() {
           <h3>Support</h3>
           <ul>
             <li>
-              <a href="/help">Help Center</a>
+              <Link href="/help">Help Center</Link>
             </li>
             <li>
-              <a href="/trust">Safety &amp; Trust</a>
+              <Link href="/trust">Safety &amp; Trust</Link>
             </li>
             <li>
-              <a href="/payments-faq">Payments FAQ</a>
+              <Link href="/payments-faq">Payments FAQ</Link>
             </li>
             <li>
-              <a href="mailto:team@learngrid.example">Contact Us</a>
+              <a href="mailto:team@learngrid.ng">Contact Us</a>
             </li>
           </ul>
         </div>
         <div>
           <h3>Follow Us</h3>
           <div className="social-links">
-            <a href="#" aria-label="Twitter/X">
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter/X">
               <svg viewBox="0 0 24 24" fill="none">
                 <path
                   d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
@@ -63,14 +64,14 @@ export function Footer() {
                 />
               </svg>
             </a>
-            <a href="#" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none">
                 <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.6" />
                 <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.6" />
                 <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
               </svg>
             </a>
-            <a href="#" aria-label="LinkedIn">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" fill="none">
                 <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" strokeWidth="1.6" />
                 <path
@@ -88,9 +89,9 @@ export function Footer() {
       <div className="container footer-base">
         <p>© {year} LearnGrid Nigeria. All rights reserved.</p>
         <div className="footer-inline-links">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/cookies">Cookie Policy</a>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+          <Link href="/cookies">Cookie Policy</Link>
         </div>
       </div>
     </footer>

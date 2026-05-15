@@ -4,11 +4,11 @@ import { prisma } from "@/lib/prisma";
 import { signOut } from "@/lib/actions/auth";
 import { Icon, type IconName } from "@/components/Icons";
 
-const menuItems: Array<{ icon: IconName; label: string }> = [
-  { icon: "key", label: "Change Password" },
-  { icon: "bell", label: "Notification Settings" },
-  { icon: "creditCard", label: "Payment Methods" },
-  { icon: "messageCircle", label: "Help & Support" },
+const menuItems: Array<{ icon: IconName; label: string; href: string }> = [
+  { icon: "bookOpen", label: "My Classes", href: "/dashboard/student/classes" },
+  { icon: "messageCircle", label: "Help & Support", href: "/help" },
+  { icon: "creditCard", label: "Payments FAQ", href: "/payments-faq" },
+  { icon: "key", label: "Reset Password", href: "/forgot-password" },
 ];
 
 export default async function StudentProfilePage() {
@@ -82,11 +82,11 @@ export default async function StudentProfilePage() {
             <span className="menu-arrow"><Icon name="chevronRight" size={16} /></span>
           </Link>
           {menuItems.map((item) => (
-            <div key={item.label} className="profile-menu-item">
+            <Link key={item.label} href={item.href} className="profile-menu-item">
               <span className="profile-menu-icon"><Icon name={item.icon} size={18} /></span>
               <span className="menu-label">{item.label}</span>
               <span className="menu-arrow"><Icon name="chevronRight" size={16} /></span>
-            </div>
+            </Link>
           ))}
           <form action={signOut}>
             <button type="submit" className="profile-menu-item profile-menu-danger" style={{ marginTop: 4 }}>

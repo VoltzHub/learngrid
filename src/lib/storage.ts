@@ -19,7 +19,7 @@ export async function uploadVerificationDoc(
   const ext = file.name.split(".").pop() ?? "bin";
   const path = `${userId}/${docType}-${Date.now()}.${ext}`;
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { error } = await supabase.storage
     .from(BUCKET)
     .upload(path, file, { upsert: true });
@@ -35,7 +35,7 @@ export function getDocUrl(path: string): string {
 }
 
 export async function getSignedUrl(path: string): Promise<string | null> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.storage
     .from(BUCKET)
     .createSignedUrl(path, 3600); // 1 hour

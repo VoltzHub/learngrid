@@ -19,8 +19,8 @@ export default function VerificationApprovedPage() {
         <p style={{ fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>Access Unlocked</p>
         {[
           "Create and list unlimited live classes",
-          "Set your own price in Naira",
-          "Automatic earnings release after each class",
+          "Earn 85% of every enrolment — released after class",
+          "Withdraw to your Nigerian bank in 1–3 days",
           "Full access to Teacher Dashboard",
         ].map((t) => (
           <div key={t} style={{ display: "flex", gap: 8, marginBottom: 6 }}>

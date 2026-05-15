@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import SignupRolePicker from "./role-picker";
 
-export default function SignupPage({
+export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: { role?: string };
+  searchParams: Promise<{ role?: string }>;
 }) {
-  if (searchParams.role === "teacher") redirect("/signup/teacher");
-  if (searchParams.role === "student") redirect("/signup/student");
+  const sp = await searchParams;
+  if (sp.role === "teacher") redirect("/signup/teacher");
+  if (sp.role === "student") redirect("/signup/student");
   return <SignupRolePicker />;
 }

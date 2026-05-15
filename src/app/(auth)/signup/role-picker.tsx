@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BookOpen, Presentation } from "lucide-react";
 import { Icon } from "@/components/Icons";
 
 export default function SignupRolePicker() {
@@ -26,8 +26,8 @@ export default function SignupRolePicker() {
         className={`onboard-role-card${role === "teacher" ? " selected-teacher" : ""}`}
         onClick={() => setRole("teacher")}
       >
-        <div className="onboard-role-icon" style={{ background: "var(--d-blue-light)" }}>
-          <Image src="/assets/icon-teacher.svg" alt="" width={28} height={28} />
+        <div className="onboard-role-icon" style={{ background: "var(--d-blue-light)", color: "var(--d-blue)" }}>
+          <Presentation size={26} strokeWidth={1.8} aria-hidden="true" />
         </div>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: "var(--d-gray-900)" }}>
@@ -47,8 +47,8 @@ export default function SignupRolePicker() {
         className={`onboard-role-card${role === "student" ? " selected-student" : ""}`}
         onClick={() => setRole("student")}
       >
-        <div className="onboard-role-icon" style={{ background: "var(--d-green-light)" }}>
-          <Image src="/assets/icon-student.svg" alt="" width={28} height={28} />
+        <div className="onboard-role-icon" style={{ background: "var(--d-green-light)", color: "var(--d-green)" }}>
+          <BookOpen size={26} strokeWidth={1.8} aria-hidden="true" />
         </div>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: "var(--d-gray-900)" }}>

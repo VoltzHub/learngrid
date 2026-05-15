@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { createClass, type ClassFormState } from "@/lib/actions/classes";
 import { Icon } from "@/components/Icons";
 import { PRICE_TIERS } from "@/lib/pricing";
@@ -16,7 +17,7 @@ function SubmitBtn({ label, disabled }: { label: string; disabled?: boolean }) {
 }
 
 export default function CreateClassPage() {
-  const [state, formAction] = useFormState<ClassFormState, FormData>(createClass, undefined);
+  const [state, formAction] = useActionState<ClassFormState, FormData>(createClass, undefined);
 
   if (state?.success) {
     return (
@@ -56,7 +57,7 @@ export default function CreateClassPage() {
         <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, flex: 1 }}>New Live Class</h2>
       </div>
 
-      <div style={{ padding: "16px 18px 28px" }}>
+      <div style={{ padding: "16px 18px 28px", maxWidth: 560 }}>
         <form action={formAction}>
           <div className="form-group">
             <label className="form-label">Class Title <span className="required">*</span></label>

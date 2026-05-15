@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { requireProfile } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -92,9 +93,13 @@ export default async function StudentDashboardPage() {
                 <div className="class-card-bottom">
                   <span className="class-card-teacher-name">by {e.class.teacher.fullName ?? "Teacher"}</span>
                   {e.class.sessionLink ? (
-                    <span className="class-card-link" style={{ color: "var(--success)" }}>Join →</span>
+                    <span className="class-card-link arrow-link" style={{ color: "var(--success)" }}>
+                      Join <ArrowRight className="arrow-fwd" size={12} strokeWidth={2.2} />
+                    </span>
                   ) : (
-                    <span className="class-card-link">View →</span>
+                    <span className="class-card-link arrow-link">
+                      View <ArrowRight className="arrow-fwd" size={12} strokeWidth={2.2} />
+                    </span>
                   )}
                 </div>
               </Link>

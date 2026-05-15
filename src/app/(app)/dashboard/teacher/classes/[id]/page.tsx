@@ -7,9 +7,10 @@ import { PublishButton, CancelButton, DeleteButton, SessionLinkForm, CompleteCla
 
 const BADGE: Record<string, string> = { DRAFT: "badge-draft", LISTED: "badge-listed", COMPLETED: "badge-completed", CANCELLED: "badge-cancelled" };
 
-export default async function ClassDetailPage({ params }: { params: { id: string } }) {
+export default async function ClassDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const profile = await requireProfile();
-  const cls = await getClassDetail(params.id);
+  const { id } = await params;
+  const cls = await getClassDetail(id);
   if (!cls || cls.teacherId !== profile.id) notFound();
 
   const feePercent = parseInt(process.env.PLATFORM_FEE_PERCENT ?? "15");

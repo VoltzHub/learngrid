@@ -35,7 +35,7 @@ export async function signUp(_prev: AuthFormState, formData: FormData): Promise<
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
   const { error } = await supabase.auth.signUp({
@@ -68,7 +68,7 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: parsed.data.email,
     password: parsed.data.password,
@@ -89,7 +89,7 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
 }
 
 export async function signOut() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
   redirect("/");
 }
