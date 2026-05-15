@@ -398,6 +398,7 @@ Sorted by what blocks what.
 
 ## 14. Where the design assets live
 
+<<<<<<< HEAD
 All the original spec artefacts are in [`docs/source/`](source/) — see [`docs/source/README.md`](source/README.md) for what's in each file and how to read them.
 
 | Asset | File in `docs/source/` |
@@ -416,6 +417,18 @@ All the original spec artefacts are in [`docs/source/`](source/) — see [`docs/
 **Point-in-time snapshots from 2026-05-15.** The team shares newer versions over chat as the product evolves — when a fresher version arrives, replace the file in `docs/source/` and update `docs/source/README.md`.
 
 **Before committing:** these files may contain sensitive business info. See `docs/source/README.md` for guidance on whether to `.gitignore` them.
+=======
+| Asset | Location |
+|---|---|
+| Functional PRD v1 (rules R-UR / R-TV / R-CS / R-PY / R-EP / R-CR / R-RT / R-NT) | `learngrid_workspace.html` (shared as attachment) |
+| 30-screen UI inventory (SC-001 to SC-030) | Same `learngrid_workspace.html` |
+| Team-friendly version | `learngrid_team.html` |
+| Week 1 deliverables | `learngrid_week1.html` |
+| Sprint 0 + 30-day plan | `LearnGrid_Sprint_0_and_30_Day_Action_Plan.pdf` |
+| Kickoff brief | `LearnGrid_Team_Kickoff_Brief.pdf` |
+
+These are **not** in this repo — they're shared as HTML/PDF artifacts in the team's channel. Ask Alali or Evalsam for the latest versions.
+>>>>>>> db0136540e1fb4f6a76f1cfa1e3d697d89e3902e
 
 ---
 
