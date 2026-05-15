@@ -8,21 +8,29 @@ export type LandingStats = {
   classesCompleted: number;
 };
 
-// Real, current platform stats for the landing page hero.
-// Falls back to optimistic launch baselines so the page doesn't look like a
-// staging server when seed data is sparse.
-export async function getLandingStats(): Promise<LandingStats> {
-  const [studentCount, verifiedTeacherCount, completedCount] = await Promise.all([
-    prisma.profile.count({ where: { role: "STUDENT" } }),
-    prisma.teacherProfile.count({ where: { verificationStatus: "VERIFIED" } }),
-    prisma.class.count({ where: { status: "COMPLETED" } }),
-  ]);
+// Baseline launch numbers used both as the floor for live counts and as
+// fallbacks when the database is unreachable (e.g. Supabase free-tier auto-pause).
+// Critical: the public landing page MUST render even if the DB is down.
+const BASELINE: LandingStats = {
+  students: 120,
+  verifiedTeachers: 25,
+  classesCompleted: 40,
+};
 
-  // Floor each at a realistic baseline — the moment the platform launches publicly
-  // these get swapped out for live counts.
-  return {
-    students: Math.max(studentCount, 120),
-    verifiedTeachers: Math.max(verifiedTeacherCount, 25),
-    classesCompleted: Math.max(completedCount, 40),
-  };
+export async function getLandingStats(): Promise<LandingStats> {
+  try {
+    const [studentCount, verifiedTeacherCount, completedCount] = await Promise.all([
+      prisma.profile.count({ where: { role: "STUDENT" } }),
+      prisma.teacherProfile.count({ where: { verificationStatus: "VERIFIED" } }),
+      prisma.class.count({ where: { status: "COMPLETED" } }),
+    ]);
+    return {
+      students: Math.max(studentCount, BASELINE.students),
+      verifiedTeachers: Math.max(verifiedTeacherCount, BASELINE.verifiedTeachers),
+      classesCompleted: Math.max(completedCount, BASELINE.classesCompleted),
+    };
+  } catch (err) {
+    console.error("[getLandingStats] DB unreachable, using baseline:", err);
+    return BASELINE;
+  }
 }

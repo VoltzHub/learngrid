@@ -357,9 +357,10 @@ summary:focus-visible {
   justify-content: center;
 }
 
-.chip-icon img {
-  width: 24px;
-  height: 24px;
+.chip-icon img,
+.chip-icon svg {
+  width: 14px;
+  height: 14px;
   display: block;
 }
 
@@ -571,6 +572,8 @@ summary:focus-visible {
   color: var(--success);
   font-weight: 700;
   font-size: 0.85rem;
+  letter-spacing: 0.015em;
+  font-variant-numeric: tabular-nums;
 }
 
 .red-dot {
@@ -674,7 +677,8 @@ summary:focus-visible {
   margin-bottom: 24px;
 }
 
-.path-icon img {
+.path-icon img,
+.path-icon svg {
   width: 28px;
   height: 28px;
   display: block;
@@ -1213,8 +1217,26 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 16px;
+  padding: 32px 16px;
   background: var(--surface-soft);
+}
+
+.auth-shell-inner {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .auth-shell { padding: 48px 24px; }
+  .auth-shell-inner { max-width: 480px; }
+}
+
+/* Pages with a .signup-wide child opt into a wider, 2-column desktop layout. */
+@media (min-width: 1024px) {
+  .auth-shell-inner:has(.signup-wide) { max-width: 960px; }
 }
 
 .auth-card {
@@ -1488,7 +1510,7 @@ summary:focus-visible {
 }
 
 /* ─── STAT CARDS ─── */
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
 .stat-card {
   border-radius: 12px; padding: 14px; border: 1px solid transparent;
 }
@@ -1584,6 +1606,194 @@ summary:focus-visible {
 .step-progress { display: flex; gap: 6px; margin-bottom: 20px; }
 .step-bar { flex: 1; height: 4px; border-radius: 4px; background: var(--d-gray-200); }
 .step-bar.active { background: var(--d-blue); }
+
+/* Named step indicator (segment + label below) */
+.step-progress-named {
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 6px;
+  margin-bottom: 18px;
+}
+.step-progress-named .step-bar { margin-bottom: 6px; }
+.step-progress-named .step-name {
+  font-size: 11px; font-weight: 600; color: var(--d-gray-500);
+  letter-spacing: 0.1px; text-transform: uppercase;
+}
+.step-progress-named .step-name.active { color: var(--d-blue); }
+
+/* Visually-hidden helper (used for screen-reader-only live region) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* Mobile-only "benefits strip" (compact aside on small screens) */
+.benefits-mobile {
+  display: grid; gap: 10px; margin: 14px 0 18px;
+  background: #fff; border: 1px solid var(--d-gray-200);
+  border-radius: 12px; padding: 14px;
+}
+.benefits-mobile-item {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.benefits-mobile-item-icon {
+  width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+  background: var(--d-blue-light); color: var(--d-blue);
+  display: flex; align-items: center; justify-content: center;
+}
+.benefits-mobile-item-text { margin: 0; font-size: 12px; color: var(--d-gray-700); line-height: 1.35; }
+.benefits-mobile-item-text strong { color: var(--d-gray-900); font-weight: 700; }
+
+@media (min-width: 1024px) {
+  .benefits-mobile { display: none; }
+}
+
+/* ─── SIGNUP: RESPONSIVE WRAPPER ─── */
+.signup-wide {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+.signup-form-col {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.signup-aside { display: none; }
+
+@media (min-width: 1024px) {
+  .signup-wide {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 48px;
+    align-items: start;
+  }
+  .signup-form-col { max-width: none; margin: 0; }
+  .signup-aside {
+    display: block;
+    position: sticky;
+    top: 24px;
+    background: #fff;
+    border: 1px solid var(--d-gray-200);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .signup-aside-title {
+    margin: 0 0 14px;
+    font-size: 14px; font-weight: 700; color: var(--d-gray-900);
+    letter-spacing: -0.2px;
+  }
+  .signup-aside-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+  .signup-aside-item { display: flex; gap: 10px; align-items: flex-start; }
+  .signup-aside-item-icon {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    background: var(--d-blue-light); color: var(--d-blue);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .signup-aside-item-text { margin: 0; font-size: 13px; color: var(--d-gray-700); line-height: 1.4; }
+  .signup-aside-item-text strong { display: block; color: var(--d-gray-900); margin-bottom: 2px; font-weight: 700; }
+}
+
+/* ─── SIGNUP: TEXT + LINK UTILITIES ─── */
+.signup-back-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: var(--d-gray-500); font-size: 13px; margin-bottom: 16px;
+}
+.signup-back-link:hover { color: var(--d-gray-900); }
+.signup-title {
+  font-size: 22px; font-weight: 800; margin: 0 0 4px;
+  letter-spacing: -0.3px; color: var(--d-gray-900);
+}
+.signup-subtitle { font-size: 13px; color: var(--d-gray-500); margin: 0 0 14px; }
+.signup-continue { margin-top: 8px; gap: 8px; }
+.signup-signin-line {
+  text-align: center; font-size: 13px; color: var(--d-gray-500); margin-top: 16px;
+}
+.signup-signin-line a { color: var(--d-blue); font-weight: 700; }
+
+@media (min-width: 640px) {
+  .signup-title { font-size: 24px; }
+}
+@media (min-width: 1024px) {
+  .signup-title { font-size: 28px; margin-bottom: 6px; }
+  .signup-subtitle { font-size: 14px; margin-bottom: 20px; }
+}
+
+/* ─── SIGNUP: TRUST STRIP ─── */
+.trust-strip {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--d-blue-light); border: 1px solid rgba(26,86,219,0.15);
+  border-radius: 10px; padding: 10px 12px; margin-bottom: 18px;
+}
+.trust-strip-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: #fff; color: var(--d-blue);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.trust-strip-text { margin: 0; font-size: 12px; color: var(--d-gray-700); line-height: 1.4; }
+.trust-strip-text strong { color: var(--d-gray-900); }
+
+/* ─── SIGNUP: NAME ROW (first + last) ─── */
+.name-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+/* ─── SIGNUP: INPUT WITH TRAILING ACTION (eye toggle) ─── */
+.input-with-action { position: relative; }
+.input-with-action .form-input { padding-right: 42px; }
+.input-action-btn {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent;
+  color: var(--d-gray-500); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: color 0.15s ease, background 0.15s ease;
+}
+.input-action-btn:hover { color: var(--d-gray-900); background: var(--d-gray-100); }
+.input-action-btn:focus-visible {
+  outline: 2px solid rgba(26,86,219,0.35); outline-offset: 1px;
+}
+
+/* ─── SIGNUP: PHONE +234 PREFIX ─── */
+.form-phone-wrap {
+  display: flex; align-items: stretch;
+  border: 1.5px solid var(--d-gray-200); border-radius: 10px; overflow: hidden;
+  background: #fff; transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-phone-wrap:focus-within {
+  border-color: var(--d-blue); box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+}
+.form-phone-wrap.error { border-color: var(--d-red); background: var(--d-red-light); }
+.form-phone-prefix {
+  padding: 0 12px; background: var(--d-gray-100);
+  border-right: 1.5px solid var(--d-gray-200);
+  font-size: 14px; font-weight: 600; color: var(--d-gray-700);
+  display: flex; align-items: center; gap: 4px;
+}
+.form-phone-wrap .form-input { border: none; border-radius: 0; }
+.form-phone-wrap .form-input:focus { box-shadow: none; }
+
+/* ─── SIGNUP: PASSWORD STRENGTH METER ─── */
+.password-meter {
+  display: flex; gap: 4px; margin-top: 8px;
+}
+.password-meter-bar {
+  flex: 1; height: 3px; border-radius: 3px; background: var(--d-gray-200);
+  transition: background 0.15s ease;
+}
+.password-meter[data-strength="weak"] .password-meter-bar:nth-child(1) { background: var(--d-red); }
+.password-meter[data-strength="fair"] .password-meter-bar:nth-child(-n+2) { background: var(--d-amber); }
+.password-meter[data-strength="strong"] .password-meter-bar { background: var(--d-green); }
+
+.password-meter-label {
+  font-size: 11px; font-weight: 600; margin: 6px 0 0;
+}
+.password-meter-label[data-strength="weak"] { color: var(--d-red); }
+.password-meter-label[data-strength="fair"] { color: var(--d-amber); }
+.password-meter-label[data-strength="strong"] { color: var(--d-green); }
+
+/* ─── SIGNUP: INLINE FIELD SUCCESS (passwords match) ─── */
+.form-success {
+  font-size: 12px; color: var(--d-green); margin: 4px 0 0; font-weight: 500;
+  display: flex; align-items: center; gap: 4px;
+}
 
 /* ─── CHECKBOX ─── */
 .form-check { display: flex; align-items: flex-start; gap: 10px; margin: 8px 0 20px; }
@@ -2067,6 +2277,84 @@ summary:focus-visible {
   background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 100%);
 }
 
+/* Buttons that lead with an icon (e.g. "🔍 Find a Live Class"). */
+.btn-icon-lead {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+}
+.btn-icon-lead svg { flex-shrink: 0; }
+
+/* Inline CTA arrow — a small icon that slides on hover. Used on links like
+   "Browse classes" / "Join class" / breadcrumbs. */
+.arrow-link {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.arrow-link svg { transition: transform 0.2s ease; }
+.arrow-link:hover svg.arrow-fwd { transform: translateX(3px); }
+.arrow-link:hover svg.arrow-back { transform: translateX(-3px); }
+
+/* Static info pages (help, trust, privacy, terms, etc.) */
+.info-page {
+  max-width: 760px; margin: 0 auto; padding: 56px 24px 80px;
+}
+.info-page-header { margin-bottom: 36px; }
+.info-page-eyebrow {
+  display: inline-block; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--primary); margin-bottom: 12px;
+}
+.info-page h1 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800;
+  line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 14px; color: var(--text);
+}
+.info-page-intro {
+  font-size: 1.05rem; line-height: 1.6; color: var(--muted); margin: 0;
+}
+.info-page h2 {
+  font-size: 1.25rem; font-weight: 700; margin: 32px 0 12px; color: var(--text);
+  letter-spacing: -0.01em;
+}
+.info-page h3 {
+  font-size: 1rem; font-weight: 700; margin: 22px 0 8px; color: var(--text);
+}
+.info-page p, .info-page li {
+  font-size: 0.95rem; line-height: 1.65; color: #334155; margin: 0 0 12px;
+}
+.info-page ul, .info-page ol {
+  padding-left: 22px; margin: 0 0 16px;
+}
+.info-page li { margin-bottom: 6px; }
+.info-page strong { color: var(--text); font-weight: 700; }
+.info-page a { color: var(--primary); font-weight: 600; }
+.info-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px 22px; margin: 20px 0; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+.info-card-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.info-card-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--d-blue-light); color: var(--primary); flex-shrink: 0;
+}
+.info-page-meta {
+  margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 0.85rem; color: var(--muted);
+}
+
+/* Currency text — the ₦ glyph's horizontal strokes visually merge with
+   adjacent numerals; a small letter-spacing keeps prices legible. */
+.mkt-card-price,
+.enrol-price-amount,
+.class-card-price,
+.earning-amount,
+.profile-stat-val,
+.stat-card-value {
+  letter-spacing: 0.015em;
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
 /* Loading skeletons */
 .skeleton {
   display: block;
@@ -2142,7 +2430,8 @@ summary:focus-visible {
 }
 .mkt-card-price {
   font-size: 1.1rem; font-weight: 800; color: var(--primary);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
 }
 .mkt-card-seats { font-size: 0.8rem; color: var(--muted); }
 
@@ -2244,7 +2533,8 @@ summary:focus-visible {
 .enrol-price { text-align: center; margin-bottom: 20px; }
 .enrol-price-amount {
   font-size: 2rem; font-weight: 800; color: var(--text);
-  letter-spacing: -0.03em; display: block;
+  letter-spacing: 0.01em; display: block;
+  font-variant-numeric: tabular-nums;
 }
 .enrol-price-label { font-size: 0.8rem; color: var(--muted); }
 .enrol-meta { display: grid; gap: 10px; margin-bottom: 20px; }

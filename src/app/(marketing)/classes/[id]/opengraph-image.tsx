@@ -6,9 +6,10 @@ export const alt = "LearnGrid class";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function ClassOgImage({ params }: { params: { id: string } }) {
+export default async function ClassOgImage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const cls = await prisma.class.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: {
       title: true,
       subject: true,

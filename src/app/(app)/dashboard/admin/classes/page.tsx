@@ -17,9 +17,10 @@ type Filter = (typeof FILTERS)[number];
 export default async function AdminClassesPage({
   searchParams,
 }: {
-  searchParams: { filter?: string };
+  searchParams: Promise<{ filter?: string }>;
 }) {
   const profile = await requireProfile();
+  const sp = await searchParams;
   if (profile.role !== Role.ADMIN) {
     return (
       <div style={{ padding: 40, textAlign: "center" }}>
@@ -29,8 +30,8 @@ export default async function AdminClassesPage({
     );
   }
 
-  const filter = (FILTERS.includes(searchParams.filter as Filter)
-    ? searchParams.filter
+  const filter = (FILTERS.includes(sp.filter as Filter)
+    ? sp.filter
     : "all") as Filter;
 
   const where =
@@ -59,7 +60,7 @@ export default async function AdminClassesPage({
   });
 
   return (
-    <div style={{ padding: 24, maxWidth: 1000, margin: "0 auto" }}>
+    <div style={{ padding: 24, maxWidth: 1400 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 6 }}>All Classes</h1>
       <p style={{ color: "var(--muted)", marginBottom: 18, fontSize: 13 }}>
         Platform-wide view. Use this to spot abuse, monitor activity, and check seat fill rates.
@@ -113,9 +114,9 @@ export default async function AdminClassesPage({
               key={cls.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr auto auto auto",
-                gap: 12,
-                padding: "12px 16px",
+                gridTemplateColumns: "1fr 80px 100px 110px",
+                gap: 16,
+                padding: "14px 18px",
                 borderBottom: i < classes.length - 1 ? "1px solid var(--d-gray-100)" : "none",
                 alignItems: "center",
               }}

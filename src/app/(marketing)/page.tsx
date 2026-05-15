@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, BadgeCheck, Banknote, BookOpen, Lock, Presentation, Search } from "lucide-react";
 import { getLandingStats } from "@/lib/actions/stats";
 
 export const revalidate = 60;
@@ -15,19 +16,19 @@ export default async function HomePage() {
             <div className="eyebrow-row" aria-label="Platform highlights">
               <span className="eyebrow-chip">
                 <span className="chip-icon green-icon">
-                  <img src="/assets/icon-verified.svg" alt="" />
+                  <BadgeCheck size={14} strokeWidth={2.2} />
                 </span>
                 Verified Teachers
               </span>
               <span className="eyebrow-chip">
                 <span className="chip-icon blue-icon">
-                  <img src="/assets/icon-lock.svg" alt="" />
+                  <Lock size={14} strokeWidth={2.2} />
                 </span>
                 Secure Payments
               </span>
               <span className="eyebrow-chip">
                 <span className="chip-icon green-icon">
-                  <img src="/assets/icon-naira.svg" alt="" />
+                  <Banknote size={14} strokeWidth={2.2} />
                 </span>
                 Earn in Naira
               </span>
@@ -43,17 +44,13 @@ export default async function HomePage() {
             </p>
 
             <div className="hero-actions">
-              <Link className="btn btn-primary" href="/signup?role=teacher">
-                <img
-                  src="/assets/icon-teacher.svg"
-                  alt=""
-                  className="btn-icon icon-light"
-                />{" "}
+              <Link className="btn btn-primary btn-icon-lead" href="/signup?role=teacher">
+                <Presentation size={18} strokeWidth={2.2} />
                 Start Teaching Live
               </Link>
-              <Link className="btn btn-secondary" href="/signup?role=student">
-                <img src="/assets/icon-student.svg" alt="" className="btn-icon" /> Find
-                a Live Class
+              <Link className="btn btn-secondary btn-icon-lead" href="/signup?role=student">
+                <Search size={18} strokeWidth={2.2} />
+                Find a Live Class
               </Link>
             </div>
 
@@ -130,7 +127,7 @@ export default async function HomePage() {
         <div className="container path-grid">
           <article className="path-card">
             <div className="path-icon blue">
-              <img src="/assets/icon-teacher.svg" alt="" aria-hidden="true" />
+              <Presentation strokeWidth={1.8} aria-hidden="true" />
             </div>
             <span className="card-kicker">For Teachers</span>
             <p>
@@ -144,15 +141,16 @@ export default async function HomePage() {
               <li>Get verified badge &amp; trust</li>
             </ul>
             <div className="path-footer">
-              <Link className="btn btn-primary" href="/signup?role=teacher">
-                Start teaching
+              <Link className="btn btn-primary btn-icon-lead" href="/signup?role=teacher">
+                <Presentation size={16} strokeWidth={2.2} />
+                Start Teaching
               </Link>
             </div>
           </article>
 
           <article className="path-card">
             <div className="path-icon green">
-              <img src="/assets/icon-student.svg" alt="" aria-hidden="true" />
+              <BookOpen strokeWidth={1.8} aria-hidden="true" />
             </div>
             <span className="card-kicker green-text">For Students</span>
             <p>
@@ -166,8 +164,9 @@ export default async function HomePage() {
               <li>Interactive real-time learning</li>
             </ul>
             <div className="path-footer">
-              <Link className="btn btn-success" href="/signup?role=student">
-                Find a live class →
+              <Link className="btn btn-success btn-icon-lead" href="/signup?role=student">
+                <Search size={16} strokeWidth={2.2} />
+                Find a Live Class
               </Link>
             </div>
           </article>
@@ -301,8 +300,9 @@ export default async function HomePage() {
               <Link className="btn btn-primary btn-block" href="/classes">
                 Browse Classes from ₦500
               </Link>
-              <Link href="/signup?role=teacher" className="pricing-link">
-                Or start teaching →
+              <Link href="/signup?role=teacher" className="pricing-link arrow-link">
+                Or start teaching
+                <ArrowRight className="arrow-fwd" size={14} strokeWidth={2.2} />
               </Link>
             </div>
           </div>
@@ -372,9 +372,10 @@ export default async function HomePage() {
                 </div>
                 <h3>Top Rated Platform</h3>
                 <p>Rated 4.9/5 by over 1,000+ Nigerian teachers</p>
-                <a href="#" className="featured-link">
-                  Read Success Stories
-                </a>
+                <Link href="/classes" className="featured-link arrow-link">
+                  Browse top-rated classes
+                  <ArrowRight className="arrow-fwd" size={14} strokeWidth={2.2} />
+                </Link>
               </article>
             </div>
           </div>
@@ -442,10 +443,12 @@ export default async function HomePage() {
         <div className="container cta-block">
           <h2>Ready to start learning?</h2>
           <div className="cta-actions">
-            <Link className="btn btn-primary" href="/classes">
+            <Link className="btn btn-primary btn-icon-lead" href="/classes">
+              <Search size={16} strokeWidth={2.2} />
               Browse Available Classes
             </Link>
-            <Link className="btn btn-secondary" href="/signup?role=teacher">
+            <Link className="btn btn-secondary btn-icon-lead" href="/signup?role=teacher">
+              <Presentation size={16} strokeWidth={2.2} />
               Become a Tutor
             </Link>
           </div>

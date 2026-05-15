@@ -2,24 +2,32 @@ import Link from "next/link";
 import { getListedClasses } from "@/lib/actions/classes";
 import { getClassCover } from "@/lib/classCovers";
 import { Avatar } from "@/components/Avatar";
+import { ngn } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
 
 export default async function ClassesPage({
   searchParams,
 }: {
-  searchParams: { subject?: string };
+  searchParams: Promise<{ subject?: string; q?: string }>;
 }) {
   const classes = await getListedClasses();
-  const activeSubject = searchParams.subject ?? "all";
+  const sp = await searchParams;
+  const activeSubject = sp.subject ?? "all";
+  const query = (sp.q ?? "").trim().toLowerCase();
 
   // Get distinct subjects for filter
   const subjects = Array.from(new Set(classes.map((c) => c.subject))).sort();
 
-  const filtered =
-    activeSubject === "all"
-      ? classes
-      : classes.filter((c) => c.subject === activeSubject);
+  const filtered = classes
+    .filter((c) => activeSubject === "all" || c.subject === activeSubject)
+    .filter(
+      (c) =>
+        !query ||
+        c.title.toLowerCase().includes(query) ||
+        c.subject.toLowerCase().includes(query) ||
+        (c.teacher.fullName?.toLowerCase().includes(query) ?? false),
+    );
 
   return (
     <section className="section marketplace-section">
@@ -29,12 +37,29 @@ export default async function ClassesPage({
           <div>
             <span className="section-tag">Live Classes</span>
             <h1 className="marketplace-title">
-              Discover classes taught by{" "}
-              <span className="accent">verified teachers</span>
+              {query ? (
+                <>
+                  Results for <span className="accent">&ldquo;{query}&rdquo;</span>
+                </>
+              ) : (
+                <>
+                  Discover classes taught by{" "}
+                  <span className="accent">verified teachers</span>
+                </>
+              )}
             </h1>
             <p className="marketplace-subtitle">
-              Browse live, interactive classes across every subject. Pay per
-              class in Naira — no subscriptions.
+              {query
+                ? `${filtered.length} class${filtered.length !== 1 ? "es" : ""} found.`
+                : "Browse live, interactive classes across every subject. Pay per class in Naira — no subscriptions."}
+              {query && (
+                <>
+                  {" "}
+                  <Link href="/classes" style={{ color: "var(--primary)", fontWeight: 600 }}>
+                    Clear search
+                  </Link>
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -128,9 +153,7 @@ export default async function ClassesPage({
                       </div>
                     </div>
                     <div className="mkt-card-footer">
-                      <span className="mkt-card-price">
-                        ₦{cls.priceNgn.toLocaleString()}
-                      </span>
+                      <span className="mkt-card-price">{ngn(cls.priceNgn)}</span>
                       <span className="mkt-card-seats">
                         {cls._count.enrolments}/{cls.seatLimit} enrolled
                       </span>

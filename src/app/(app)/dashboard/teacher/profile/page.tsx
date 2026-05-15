@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getTeacherStats } from "@/lib/actions/earnings";
@@ -5,11 +6,12 @@ import { signOut } from "@/lib/actions/auth";
 import { Icon, type IconName } from "@/components/Icons";
 import { TeacherBottomNav } from "@/components/TeacherBottomNav";
 
-const menuItems: Array<{ icon: IconName; label: string }> = [
-  { icon: "key", label: "Change Password" },
-  { icon: "bell", label: "Notification Settings" },
-  { icon: "creditCard", label: "Payout Settings" },
-  { icon: "messageCircle", label: "Help & Support" },
+const menuItems: Array<{ icon: IconName; label: string; href: string }> = [
+  { icon: "creditCard", label: "Bank & Payout Details", href: "/dashboard/teacher/withdraw" },
+  { icon: "naira", label: "Earnings History", href: "/dashboard/teacher/earnings" },
+  { icon: "bell", label: "Notifications", href: "/dashboard/teacher/notifications" },
+  { icon: "messageCircle", label: "Help & Support", href: "/help" },
+  { icon: "key", label: "Reset Password", href: "/forgot-password" },
 ];
 
 export default async function ProfilePage() {
@@ -88,11 +90,11 @@ export default async function ProfilePage() {
 
         <div style={{ borderTop: "1px solid var(--d-gray-200)", paddingTop: 16, marginTop: 8 }}>
           {menuItems.map((item) => (
-            <div key={item.label} className="profile-menu-item">
+            <Link key={item.label} href={item.href} className="profile-menu-item">
               <span className="profile-menu-icon"><Icon name={item.icon} size={18} /></span>
               <span className="menu-label">{item.label}</span>
               <span className="menu-arrow"><Icon name="chevronRight" size={16} /></span>
-            </div>
+            </Link>
           ))}
           <form action={signOut}>
             <button type="submit" className="profile-menu-item profile-menu-danger" style={{ marginTop: 4 }}>

@@ -23,10 +23,11 @@ const BADGE_CLASS: Record<string, string> = {
 export default async function MyClassesPage({
   searchParams,
 }: {
-  searchParams: { filter?: string };
+  searchParams: Promise<{ filter?: string }>;
 }) {
   const profile = await requireProfile();
-  const filter = searchParams.filter ?? "all";
+  const sp = await searchParams;
+  const filter = sp.filter ?? "all";
   const statusFilter = STATUS_MAP[filter];
   const classes = await getTeacherClasses(profile.id, statusFilter);
 

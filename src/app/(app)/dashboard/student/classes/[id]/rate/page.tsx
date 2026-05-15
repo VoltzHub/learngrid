@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { use, useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 import { submitRating, type RatingFormState } from "@/lib/actions/ratings";
 
 function SubmitBtn() {
@@ -14,8 +14,9 @@ function SubmitBtn() {
   );
 }
 
-export default function RateClassPage({ params }: { params: { id: string } }) {
-  const [state, formAction] = useFormState<RatingFormState, FormData>(submitRating, undefined);
+export default function RateClassPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const [state, formAction] = useActionState<RatingFormState, FormData>(submitRating, undefined);
   const [selectedStars, setSelectedStars] = useState(0);
   const [hoveredStars, setHoveredStars] = useState(0);
 
@@ -49,7 +50,7 @@ export default function RateClassPage({ params }: { params: { id: string } }) {
 
       <div style={{ padding: "16px 18px 28px" }}>
         <form action={formAction}>
-          <input type="hidden" name="classId" value={params.id} />
+          <input type="hidden" name="classId" value={id} />
           <input type="hidden" name="stars" value={selectedStars} />
 
           <div style={{ textAlign: "center", margin: "12px 0 24px" }}>

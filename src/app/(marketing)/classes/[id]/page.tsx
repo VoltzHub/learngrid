@@ -1,21 +1,24 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { EnrolButton } from "./EnrolButton";
 import { getEnrolmentStatus } from "@/lib/actions/enrolment";
 import { getClassCover } from "@/lib/classCovers";
 import { Avatar } from "@/components/Avatar";
+import { ngn } from "@/lib/money";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  const { id } = await params;
   const cls = await prisma.class.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { title: true, subject: true, priceNgn: true, teacher: { select: { fullName: true } } },
   });
   if (!cls) return { title: "Class not found" };
@@ -34,11 +37,13 @@ export default async function ClassDetailPage({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { ref?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ ref?: string }>;
 }) {
+  const { id } = await params;
+  const sp = await searchParams;
   const cls = await prisma.class.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       teacher: {
         select: { fullName: true, avatarUrl: true },
@@ -87,7 +92,10 @@ export default async function ClassDetailPage({
       <div className="container class-detail-layout">
         {/* Breadcrumb */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link href="/classes">← All Classes</Link>
+          <Link href="/classes" className="arrow-link">
+            <ArrowLeft className="arrow-back" size={14} strokeWidth={2.2} />
+            All Classes
+          </Link>
         </nav>
 
         <div className="class-detail-hero">
@@ -209,7 +217,7 @@ export default async function ClassDetailPage({
           <aside className="class-detail-sidebar">
             <div className="enrol-card">
               <div className="enrol-price">
-                <span className="enrol-price-amount">₦{cls.priceNgn.toLocaleString()}</span>
+                <span className="enrol-price-amount">{ngn(cls.priceNgn)}</span>
                 <span className="enrol-price-label">per student</span>
               </div>
 
@@ -228,44 +236,50 @@ export default async function ClassDetailPage({
                 </div>
               </div>
 
-              {enrolled && cls.sessionLink && (
-                <a href={cls.sessionLink} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-block">
-                  Join Class →
-                </a>
-              )}
-
-              {enrolled && !cls.sessionLink && (
-                <div className="enrol-enrolled">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="20" height="20"><path d="m20 6-11 11-5-5" /></svg>
-                  <span>You&apos;re enrolled! Session link coming soon.</span>
-                </div>
-              )}
-
-              {!enrolled && !isTeacher && cls.status === "LISTED" && seatsLeft > 0 && (
-                <EnrolButton
-                  classId={cls.id}
-                  amount={cls.priceNgn}
-                  verifyRef={searchParams.ref}
-                />
-              )}
-
-              {!enrolled && !isTeacher && (seatsLeft <= 0 || cls.status !== "LISTED") && (
-                <button className="btn btn-primary btn-block" disabled style={{ opacity: 0.4 }}>
-                  {cls.status === "COMPLETED" ? "Class Ended" : "Class Full"}
-                </button>
-              )}
-
-              {isTeacher && (
-                <Link href={`/dashboard/teacher/classes/${cls.id}`} className="btn btn-primary btn-block" style={{ textAlign: "center" }}>
-                  Manage Class
-                </Link>
-              )}
-
-              {!enrolled && !isTeacher && role === null && (
-                <Link href={`/signin?next=/classes/${cls.id}`} className="btn btn-primary btn-block" style={{ textAlign: "center" }}>
-                  Sign in to Enrol
-                </Link>
-              )}
+              {(() => {
+                // Single decision tree so we never render two CTAs at once.
+                if (enrolled) {
+                  return cls.sessionLink ? (
+                    <a href={cls.sessionLink} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-block arrow-link" style={{ justifyContent: "center" }}>
+                      Join Class
+                      <ArrowRight className="arrow-fwd" size={16} strokeWidth={2.2} />
+                    </a>
+                  ) : (
+                    <div className="enrol-enrolled">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="20" height="20"><path d="m20 6-11 11-5-5" /></svg>
+                      <span>You&apos;re enrolled! Session link coming soon.</span>
+                    </div>
+                  );
+                }
+                if (isTeacher) {
+                  return (
+                    <Link href={`/dashboard/teacher/classes/${cls.id}`} className="btn btn-primary btn-block enrol-cta">
+                      Manage Class
+                    </Link>
+                  );
+                }
+                if (cls.status !== "LISTED" || seatsLeft <= 0) {
+                  return (
+                    <button type="button" className="btn btn-primary btn-block enrol-cta enrol-cta-disabled" disabled>
+                      {cls.status === "COMPLETED" ? "Class Ended" : "Class Full"}
+                    </button>
+                  );
+                }
+                if (role === null) {
+                  return (
+                    <Link href={`/signin?next=/classes/${cls.id}`} className="btn btn-primary btn-block enrol-cta">
+                      Sign in to Enrol
+                    </Link>
+                  );
+                }
+                return (
+                  <EnrolButton
+                    classId={cls.id}
+                    amount={cls.priceNgn}
+                    verifyRef={sp.ref}
+                  />
+                );
+              })()}
 
               <div className="enrol-trust">
                 <div className="enrol-trust-item">
