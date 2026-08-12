@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ForgotPasswordController extends Controller
 {
@@ -18,6 +19,16 @@ class ForgotPasswordController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email'],
         ]);
+
+        $key = 'login:' . $request->ip() . '|' . $request->email;
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return response()->json([
+                'message' => 'Too many login attempts.',
+                'seconds' => RateLimiter::availableIn($key),
+            ], 429);
+        }
+
 
         $user = User::where('email', $validated['email'])->first();
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -16,6 +17,17 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
             'remember' => ['boolean'],
         ]);
+
+        $key = 'login:' . $request->ip() . '|' . $validated['email'];
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return response()->json([
+                'message' => 'Too many login attempts.',
+                'seconds' => RateLimiter::availableIn($key),
+            ], 429);
+        }
+
+        RateLimiter::hit($key, 60);
 
         $user = User::where('email', $validated['email'])->first();
 
@@ -30,6 +42,8 @@ class LoginController extends Controller
                 'message' => 'Please verify your email first.',
             ], 403);
         }
+
+        RateLimiter::clear($key);
 
         $remember = $validated['remember'] ?? false;
 
@@ -47,6 +61,17 @@ class LoginController extends Controller
             'message' => 'Login successful.',
             'token' => $token,
             'user' => $user,
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->user()
+            ->currentAccessToken()
+            ->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully.',
         ]);
     }
 }
