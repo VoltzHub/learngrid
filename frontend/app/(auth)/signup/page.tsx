@@ -19,6 +19,7 @@ import AuthFooter from "@/components/auth/footer/AuthFooter";
 import Wrapper from "@/components/auth/Wrapper";
 import { useRouter } from "next/navigation";
 import axios from 'axios';
+import api from "@/lib/axios";
 
 function Page(): ReactNode {
    const form = useForm<SignUpFormSchemaType>({
@@ -35,8 +36,8 @@ function Page(): ReactNode {
 
   const onSubmit = async (data: SignUpFormSchemaType) => {
       try {
-          const response = await axios.post(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+          const response = await api.post(
+              `/api/register`,
               {
                   email: data.email,
                   password: data.password,
