@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 type Slide = {
     id: number;
@@ -54,7 +55,7 @@ export default function AuthSlider(): ReactNode {
     const [currentIndex, setCurrentIndex] = useState(0);
     const trackRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-
+    const router = useRouter();
     useGSAP(
         () => {
             gsap.to(trackRef.current, {
@@ -113,7 +114,7 @@ export default function AuthSlider(): ReactNode {
                             }}
                         />
 
-                        <div className="absolute bottom-20 left-10 max-w-lg text-white">
+                        <div className="absolute bottom-20 left-4 xl:left-10 max-w-lg text-white">
                             <h2 className="text-4xl font-bold">
                                 {slide.title}
                             </h2>
@@ -123,7 +124,7 @@ export default function AuthSlider(): ReactNode {
                 ))}
             </div>
 
-            <div className="absolute right-10 bottom-10 flex gap-3 z-10">
+            <div className="absolute xl:right-10 xl:bottom-10 flex gap-3 z-10 right-4 bottom-2">
                 <button
                     type="button"
                     onClick={previousSlide}
@@ -142,16 +143,21 @@ export default function AuthSlider(): ReactNode {
                 </button>
             </div>
 
-            <div className="absolute bottom-10 left-36 flex -translate-x-1/2 gap-2 z-10">
+            <div className="absolute bottom-15 xl:bottom-10 left-21 xl:left-36 flex -translate-x-1/2 gap-2 z-10">
                 {slides.map((slide, index) => (
                     <button
                         key={slide.id}
                         type="button"
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex ? "w-8 bg-white" : "w-8 bg-white/50"}`}
+                        className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex ? "w-5 bg-white" : "w-5 bg-white/50"}`}
                     />
                 ))}
+            </div>
+            <div>
+                <button 
+                    onClick={() => router.push('/signup')}
+                className="cursor-pointer absolute inline-block xl:hidden bottom-2 left-4 py-2 px-4 bg-white rounded-[12px]">Get Started</button>
             </div>
         </div>
     );

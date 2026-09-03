@@ -9,13 +9,14 @@ export default function Layout(
     }
 ): ReactNode {
     return (
-        <main className='max-w-360 mx-auto flex'>
-            <section className='hidden lg:block flex-1/2'>
-                <AuthSlider /> 
+        <main className="max-w-360 mx-auto flex h-full">
+            <section className="block xl:hidden h-screen w-screen max-w-300 max-h-155">
+                <AuthSlider />
             </section>
-            <section className='flex-1/2'>
-                { children }
+            <section className="hidden xl:block flex-1/2">
+                <AuthSlider />
             </section>
+            <section className="hidden xl:block flex-1/2">{children}</section>
         </main>
-    )
+    );
 }
