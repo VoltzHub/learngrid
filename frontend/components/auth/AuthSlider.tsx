@@ -157,7 +157,7 @@ export default function AuthSlider(): ReactNode {
             <div>
                 <button 
                     onClick={() => router.push('/signup')}
-                className="cursor-pointer absolute inline-block xl:hidden bottom-2 left-4 py-2 px-4 bg-white rounded-[12px]">Get Started</button>
+                className="cursor-pointer absolute inline-block xl:hidden bottom-5 left-4 py-2 px-4 bg-white rounded-[12px]">Get Started</button>
             </div>
         </div>
     );
