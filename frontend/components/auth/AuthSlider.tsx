@@ -107,14 +107,14 @@ export default function AuthSlider(): ReactNode {
                         />
 
                         <div
-                            className="absolute inset-0"
+                            className="absolute inset-0 pointer-events-none"
                             style={{
                                 background:
                                     "linear-gradient(to top, #0037B1E5 0%, #0037B133 20%, #0037B100 90%)",
                             }}
                         />
 
-                        <div className="absolute bottom-20 left-4 xl:left-10 max-w-lg text-white">
+                        <div className="absolute bottom-30 left-4 xl:left-10 max-w-lg text-white">
                             <h2 className="text-4xl font-bold">
                                 {slide.title}
                             </h2>
@@ -124,7 +124,7 @@ export default function AuthSlider(): ReactNode {
                 ))}
             </div>
 
-            <div className="absolute xl:right-10 xl:bottom-10 flex gap-3 z-10 right-4 bottom-2">
+            <div className="absolute xl:right-10 xl:bottom-10 flex gap-3 z-10 right-4 bottom-5">
                 <button
                     type="button"
                     onClick={previousSlide}
