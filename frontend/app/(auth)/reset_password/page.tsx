@@ -1,7 +1,7 @@
 "use client"
 
 import { type ReactNode, useState, useEffect } from 'react';
-import Headline from '@/components/select_role/Headline';
+import Headline from '@/components/Headline';
 import Wrapper from '@/components/auth/Wrapper';
 import EmailField from '@/components/auth/reset_password/EmailField';
 import Button from '@/components/auth/Button';

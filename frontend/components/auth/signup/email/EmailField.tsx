@@ -16,11 +16,11 @@ function EmailField({
     const email = form.watch("email");
 
     return (
-        <div className="mt-16">
+        <div className="mt-16 px-1">
             <Label htmlFor="email" text="Email Address" />
             <InputContainer
                 styles={`
-                    gap-x-1
+                    gap-x-1 w-full
                     ${
                         email.length === 0
                             ? "border border-[#C4C5D7]"

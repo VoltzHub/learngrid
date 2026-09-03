@@ -1,7 +1,7 @@
 "use client"
 
 import { type ReactNode, useState, useEffect } from 'react'
-import Headline from '@/components/select_role/Headline'
+import Headline from '@/components/Headline'
 import PasswordField from '@/components/auth/login/password/PasswordField'
 import EmailField from '@/components/auth/login/email/EmailField'
 import RememberMe from '@/components/auth/remember_me/RememberMe'
@@ -93,9 +93,9 @@ function Page(): ReactNode {
                   text={isLoggingIn ? "Signing In..." : "Sign In"}
                   disabled={!form.formState.isValid || isLoggingIn}
               />
+                <AuthChoice />
+                <GoogleButton />
           </form>
-          <AuthChoice />
-          <GoogleButton />
           <AuthFooter
               text="Don't have an account?"
               button="Create Account"

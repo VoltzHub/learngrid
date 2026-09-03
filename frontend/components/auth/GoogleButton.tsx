@@ -3,7 +3,9 @@ import Image from 'next/image';
 
 export default function GoogleButton() {
   return (
-      <button className="cursor-pointer rounded-[12px] bg-white border border-[#C4C5D7] gap-x-3 items-center mt-8.5 inline-flex w-full h-12.5 justify-center">
+      <button className="cursor-pointer rounded-[12px] bg-white border border-[#C4C5D7] gap-x-3 items-center mt-8.5 inline-flex w-full h-12.5 justify-center
+        max-w-175 mx-auto
+      ">
           <Image
               src="/auth/google_icon.svg"
               alt="Google's icon"

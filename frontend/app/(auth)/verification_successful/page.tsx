@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
-import Headline from "@/components/select_role/Headline";
+import Headline from "@/components/Headline";
 import Wrapper from "@/components/auth/Wrapper";
 import AuthFooter from "@/components/auth/footer/AuthFooter";
 import { useRouter } from "next/navigation";

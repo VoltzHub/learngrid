@@ -1,34 +1,38 @@
-"use client"
+"use client";
 
-import { type ReactNode, useState } from 'react';
-import AuthSlider from '@/components/auth/AuthSlider';
+import { type ReactNode, useState } from "react";
+import AuthSlider from "@/components/auth/AuthSlider";
 
-export default function Layout(
-    {
-        children
-    } : {
-        children: ReactNode
-    }
-): ReactNode {
-    const [showAuthSlider, setShowAuthSlider] = useState<boolean>(true);
+export default function Layout({
+    children,
+}: {
+    children: ReactNode;
+}): ReactNode {
+    const [showAuthSlider, setShowAuthSlider] = useState(true);
+
     return (
-        <main className="max-w-360 mx-auto flex h-full">
-            {
-                showAuthSlider && (
-                    <section className="relative block xl:hidden h-screen w-screen max-w-300 min-h-50 max-h-400">
-                        <AuthSlider handleAuthSlider={() => setShowAuthSlider(false)}/>
-                    </section>
+        <main className="mx-auto flex min-h-screen max-w-360">
+            {/* MOBILE */}
+            {showAuthSlider && (
+                <section className="relative block h-screen w-screen sm:hidden">
+                    <AuthSlider
+                        handleAuthSlider={() => setShowAuthSlider(false)}
+                    />
+                </section>
+            )}
 
-                )
-            }
-            <section className="hidden xl:block flex-1/2">
-                {
-                    showAuthSlider && (
-                        <AuthSlider handleAuthSlider={() =>setShowAuthSlider(true)}/>
-                    )
-                }
+            {!showAuthSlider && (
+                <section className="block w-full sm:hidden">{children}</section>
+            )}
+
+            {/* DESKTOP */}
+            <section className="hidden min-h-screen flex-1 sm:block">
+                <AuthSlider handleAuthSlider={() => {}} />
             </section>
-            <section className="hidden xl:block flex-1/2">{children}</section>
+
+            <section className="hidden min-h-screen flex-1 sm:block">
+                {children}
+            </section>
         </main>
     );
 }

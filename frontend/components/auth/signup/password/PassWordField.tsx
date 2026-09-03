@@ -55,14 +55,14 @@ function PasswordField({
     ];
 
     return (
-        <div className="font-inter my-7.5">
+        <div className="font-inter my-7.5 px-1">
             <div className="mb-2">
                 <Label htmlFor="password" text="Password" />
             </div>
 
             <InputContainer
                 styles={`
-                    gap-x-2 relative
+                    gap-x-2 relative w-full
                     ${
                         password.length === 0
                             ? "border border-[#C4C5D7]"
@@ -88,13 +88,13 @@ function PasswordField({
                 <Input
                     hook={form.register("password")}
                     id="password"
-                    placeholder="........"
+                    placeholder="password"
                     type={showPassword ? "text" : "password"}
-                    styles="placholder:font-inter placeholder:text-5xl"
+                    styles=""
                 />
             </InputContainer>
             {form.formState.errors.password?.message && (
-                <small className="text-red-500 text-[16px] font-inter">
+                <small className="text-red-500 sm:text-[16px] text-[14px] font-inter">
                     {form.formState.errors.password.message}
                 </small>
             )}

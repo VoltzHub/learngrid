@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 type Slide = {
     id: number;
@@ -51,11 +51,20 @@ const slides: Slide[] = [
     },
 ];
 
-export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React.Dispatch<React.SetStateAction<boolean>>}): ReactNode {
+type AuthSliderProps = {
+    handleAuthSlider: () => void;
+};
+
+export default function AuthSlider({
+    handleAuthSlider,
+}: AuthSliderProps): ReactNode {
     const [currentIndex, setCurrentIndex] = useState(0);
+
     const trackRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+
     const router = useRouter();
+
     useGSAP(
         () => {
             gsap.to(trackRef.current, {
@@ -64,7 +73,10 @@ export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React
                 ease: "power2.inOut",
             });
         },
-        { dependencies: [currentIndex], scope: containerRef },
+        {
+            dependencies: [currentIndex],
+            scope: containerRef,
+        },
     );
 
     const nextSlide = () => {
@@ -94,6 +106,7 @@ export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React
             ref={containerRef}
             className="relative h-full w-full overflow-hidden font-inter"
         >
+            {/* SLIDES */}
             <div ref={trackRef} className="flex h-full w-full">
                 {slides.map((slide) => (
                     <div
@@ -106,59 +119,76 @@ export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React
                             className="h-full w-full object-cover"
                         />
 
+                        {/* GRADIENT OVERLAY */}
                         <div
-                            className="absolute inset-0 pointer-events-none"
+                            className="pointer-events-none absolute inset-0"
                             style={{
                                 background:
                                     "linear-gradient(to top, #0037B1E5 0%, #0037B133 20%, #0037B100 90%)",
                             }}
                         />
 
-                        <div className="absolute bottom-30 left-4 xl:left-10 max-w-lg text-white">
+                        {/* SLIDE TEXT */}
+                        <div className="absolute bottom-30 left-4 max-w-lg text-white xl:left-10">
                             <h2 className="text-4xl font-bold">
                                 {slide.title}
                             </h2>
+
                             <p className="mt-4 text-lg">{slide.description}</p>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="absolute xl:right-10 xl:bottom-10 flex gap-3 z-10 right-4 bottom-5">
+            {/* PREVIOUS / NEXT BUTTONS */}
+            <div className="absolute right-4 bottom-5 z-10 flex gap-3 xl:right-10 xl:bottom-10">
                 <button
                     type="button"
                     onClick={previousSlide}
-                    className="flex size-10 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm"
+                    className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm"
                     aria-label="Previous slide"
                 >
                     <ChevronLeft />
                 </button>
+
                 <button
                     type="button"
                     onClick={nextSlide}
-                    className="flex size-10 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm"
+                    className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm"
                     aria-label="Next slide"
                 >
                     <ChevronRight />
                 </button>
             </div>
 
-            <div className="absolute bottom-20 xl:bottom-10 left-21 xl:left-36 flex -translate-x-1/2 gap-2 z-10">
+            {/* SLIDE INDICATORS */}
+            <div className="absolute bottom-20 left-21 z-10 flex -translate-x-1/2 gap-2 xl:bottom-10 xl:left-36">
                 {slides.map((slide, index) => (
                     <button
                         key={slide.id}
                         type="button"
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex ? "w-5 bg-white" : "w-5 bg-white/50"}`}
+                        className={`h-1 rounded-full transition-all duration-300 ${
+                            index === currentIndex
+                                ? "w-5 bg-white"
+                                : "w-5 bg-white/50"
+                        }`}
                     />
                 ))}
             </div>
-            <div>
-                <button 
-                    onClick={() => {router.push('/signup'); handleAuthSlider}}
-                className="cursor-pointer absolute inline-block xl:hidden bottom-5 left-4 py-2 px-4 bg-white rounded-[12px]">Get Started</button>
-            </div>
+
+            {/* GET STARTED BUTTON - MOBILE ONLY */}
+            <button
+                type="button"
+                onClick={() => {
+                    handleAuthSlider();
+                    router.push("/signup");
+                }}
+                className="absolute bottom-5 left-4 z-50 inline-block cursor-pointer rounded-[12px] bg-white px-4 py-2 xl:hidden"
+            >
+                Get Started
+            </button>
         </div>
     );
 }

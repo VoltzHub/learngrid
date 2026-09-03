@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 
 import Logo from "@/components/shared/Logo";
 
-import Headline from "@/components/select_role/Headline";
+import Headline from "@/components/Headline";
 import Roles from "@/components/select_role/Roles";
 
 export default function SelectRole(): ReactNode {

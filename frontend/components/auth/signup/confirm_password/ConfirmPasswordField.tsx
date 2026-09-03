@@ -18,14 +18,14 @@ export default function ConfirmPasswordField({
     const passwordConfirm = form.watch("passwordConfirm") || "";
 
     return (
-        <div className="font-inter my-7.5">
+        <div className="font-inter my-7.5 px-1">
             <div className="mb-2 flex items-center justify-between">
                 <Label htmlFor="passwordConfirm" text="Confirm Password" />
             </div>
 
             <InputContainer
                 styles={`
-          gap-x-2 relative
+          gap-x-2 relative w-full
           ${
               passwordConfirm.length === 0
                   ? "border border-[#C4C5D7]"
@@ -52,9 +52,9 @@ export default function ConfirmPasswordField({
                 <Input
                     hook={form.register("passwordConfirm")}
                     id="passwordConfirm"
-                    placeholder="........"
+                    placeholder="confirm password"
                     type={showPassword ? "text" : "password"}
-                    styles="placeholder:font-inter placeholder:text-5xl"
+                    styles=""
                 />
             </InputContainer>
 

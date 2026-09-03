@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useState } from "react";
-import Headline from "@/components/select_role/Headline";
+import Headline from "@/components/Headline";
 import VerifyEmailCode from "@/components/auth/signup/verify_email/VerifyEmailCode";
 import Button from "@/components/auth/Button";
 import AuthFooter from "@/components/auth/footer/AuthFooter";
@@ -178,7 +178,10 @@ function Page(): ReactNode {
                 subTitle={`We just sent a 6-digit code to ${email}, enter it below:`}
             />
 
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full max-w-125 mx-auto"
+            >
                 <VerifyEmailCode form={form} />
 
                 <Button

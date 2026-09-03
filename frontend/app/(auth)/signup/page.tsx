@@ -8,7 +8,7 @@ import {
     SignUpFormSchemaType,
 } from "@/schema/signUpFormSchema";
 
-import Headline from "@/components/select_role/Headline";
+import Headline from "@/components/Headline";
 import PasswordField from "@/components/auth/signup/password/PassWordField";
 import EmailField from "@/components/auth/signup/email/EmailField";
 import ConfirmPasswordField from "@/components/auth/signup/confirm_password/ConfirmPasswordField";
@@ -61,7 +61,9 @@ function Page(): ReactNode {
         <Wrapper>
             <Headline title="Sign Up" subTitle="Start your learning journey" />
 
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full max-w-125 mx-auto"
+            >
                 <EmailField form={form} />
                 <PasswordField form={form} />
                 <ConfirmPasswordField form={form} />
@@ -69,10 +71,10 @@ function Page(): ReactNode {
                     text="Sign Up"
                     disabled={!form.formState.isValid}
                 />
+                <AuthChoice />
+                <GoogleButton />
             </form>
 
-            <AuthChoice />
-            <GoogleButton />
 
             <AuthFooter
                 text="Already have an Account?"

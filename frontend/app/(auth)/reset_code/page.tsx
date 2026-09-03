@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useState } from "react";
-import Headline from "@/components/select_role/Headline";
+import Headline from "@/components/Headline";
 import VerifyResetCode from "@/components/auth/reset_password/VerifyResetCode";
 import Button from "@/components/auth/Button";
 import AuthFooter from "@/components/auth/footer/AuthFooter";
