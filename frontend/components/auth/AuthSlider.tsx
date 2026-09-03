@@ -51,7 +51,7 @@ const slides: Slide[] = [
     },
 ];
 
-export default function AuthSlider(): ReactNode {
+export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React.Dispatch<React.SetStateAction<boolean>>}): ReactNode {
     const [currentIndex, setCurrentIndex] = useState(0);
     const trackRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -114,7 +114,7 @@ export default function AuthSlider(): ReactNode {
                             }}
                         />
 
-                        <div className="absolute bottom-30 left-4 xl:left-10 max-w-lg text-white">
+                        <div className="absolute bottom-50 left-4 xl:left-10 max-w-lg text-white">
                             <h2 className="text-4xl font-bold">
                                 {slide.title}
                             </h2>
@@ -156,7 +156,7 @@ export default function AuthSlider(): ReactNode {
             </div>
             <div>
                 <button 
-                    onClick={() => router.push('/signup')}
+                    onClick={() => {router.push('/signup'); handleAuthSlider}}
                 className="cursor-pointer absolute inline-block xl:hidden bottom-5 left-4 py-2 px-4 bg-white rounded-[12px]">Get Started</button>
             </div>
         </div>
