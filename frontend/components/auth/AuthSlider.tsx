@@ -143,7 +143,7 @@ export default function AuthSlider(): ReactNode {
                 </button>
             </div>
 
-            <div className="absolute bottom-15 xl:bottom-10 left-21 xl:left-36 flex -translate-x-1/2 gap-2 z-10">
+            <div className="absolute bottom-50 xl:bottom-10 left-21 xl:left-36 flex -translate-x-1/2 gap-2 z-10">
                 {slides.map((slide, index) => (
                     <button
                         key={slide.id}
