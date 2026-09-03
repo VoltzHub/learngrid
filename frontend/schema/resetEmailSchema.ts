@@ -34,17 +34,9 @@ const emailVerificationSchema = z
         }
     });
 
-export const loginFormSchema = z.object({
-    email: emailVerificationSchema,
-    password: z
-        .string()
-        .min(8, {
-            message: "Your password must be a minimum of 8 characters",
-        })
-        .max(70, {
-            message: "Your password must not be above 70 characters",
-        }),
-    rememberMe: z.boolean().optional(),
-});
+export const resetEmailSchema = z
+    .object({
+        email: emailVerificationSchema,
+    })
 
-export type LoginFormSchemaType = z.infer<typeof loginFormSchema>;
+export type ResetEmailSchemaType = z.infer<typeof resetEmailSchema>;

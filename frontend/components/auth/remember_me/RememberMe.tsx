@@ -1,25 +1,20 @@
-"use client"
+"use client";
 
-import { signUpFormSchema, SignUpFormSchemaType } from '@/schema/signUpFormSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { type ReactNode } from 'react';
-import { useForm } from 'react-hook-form';
+import { type ReactNode } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
+type InputProps = {
+    hook: UseFormRegisterReturn;
+};
 
-export default function RememberMe(): ReactNode {
-
-    const form = useForm<SignUpFormSchemaType>({
-        resolver: zodResolver(signUpFormSchema),
-        defaultValues: {
-            rememberMe: false
-        }
-    })
+export default function RememberMe({ hook }: InputProps): ReactNode {
     return (
-        <div className='flex items-center gap-2 ml-1'>
-            <input type="checkbox" id="remember_me" />
+        <div className="flex items-center gap-2 ml-1">
+            <input {...hook} type="checkbox" id="remember_me" />
             <label
                 htmlFor="remember_me"
-                className="leading-6 text-[16px] align-middle font-inter text-[#434655]">
+                className="leading-6 text-[16px] align-middle font-inter text-[#434655]"
+            >
                 Remember Me
             </label>
         </div>

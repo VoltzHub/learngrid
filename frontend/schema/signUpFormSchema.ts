@@ -1,34 +1,39 @@
 import { z } from "zod";
 import { isValidEmail } from "@/lib/utils";
 
-const emailVerificationSchema = z.email().superRefine(async (email, ctx) => {
-    const isAvailable = await isValidEmail(email);
-    if (!isAvailable) {
-        ctx.addIssue({
-            code: "custom",
-            message: "Email is not valid",
-        });
-    }
+const emailVerificationSchema = z
+    .email({ message: "Please enter a valid email address" })
+    .superRefine(async (email, ctx) => {
+        const isAvailable = await isValidEmail(email);
+        if (!isAvailable) {
+            ctx.addIssue({
+                code: "custom",
+                message: "Email is not valid",
+            });
+            return;
+        }
 
-    if (email) {
-        const hasAddSign = email.includes("+");
-        if (hasAddSign) {
+        if (email.includes("+")) {
             ctx.addIssue({
                 code: "custom",
                 message: "Email can not have a '+' symbol",
             });
         }
-    }
 
-    const subDomainEmail = email.split("@")[1].split(".").length > 2;
+        const domain = email.split("@")[1];
 
-    if (subDomainEmail) {
-        ctx.addIssue({
-            code: "custom",
-            message: "Email should not be a subdomain email",
-        });
-    }
-});
+        if (domain) {
+            const isSubDomainEmail = domain.split(".").length > 2;
+
+            if (isSubDomainEmail) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "Email should not be a subdomain email",
+                });
+            }
+        }
+    });
+
 
 export const signUpFormSchema = z
     .object({
@@ -44,10 +49,6 @@ export const signUpFormSchema = z
         passwordConfirm: z
             .string()
             .nonempty({ message: "Your password must not be empty" }),
-        otpCode: z
-            .string()
-            .length(6, "OTP must be exactly 6 digits")
-            .regex(/^\d{6}$/, "OTP must contain only digits"),
         })
     .refine((data) => data.password === data.passwordConfirm, {
         message: "Passwords do not match",

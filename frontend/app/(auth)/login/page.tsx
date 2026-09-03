@@ -39,6 +39,7 @@ function Page(): ReactNode {
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <EmailField form={form} />
                 <PasswordField form={form} />
+                <RememberMe hook={form.register('rememberMe')}/>
                 <Button
                     text="Sign In"
                     disabled={!form.formState.isValid}
