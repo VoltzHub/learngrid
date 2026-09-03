@@ -114,7 +114,7 @@ export default function AuthSlider({handleAuthSlider}: { handleAuthSlider: React
                             }}
                         />
 
-                        <div className="absolute bottom-50 left-4 xl:left-10 max-w-lg text-white">
+                        <div className="absolute bottom-30 left-4 xl:left-10 max-w-lg text-white">
                             <h2 className="text-4xl font-bold">
                                 {slide.title}
                             </h2>
