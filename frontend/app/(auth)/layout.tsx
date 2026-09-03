@@ -10,7 +10,7 @@ export default function Layout(
 ): ReactNode {
     return (
         <main className='max-w-360 mx-auto flex'>
-            <section className='flex-1/2'>
+            <section className='hidden lg:block flex-1/2'>
                 <AuthSlider /> 
             </section>
             <section className='flex-1/2'>

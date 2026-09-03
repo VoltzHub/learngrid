@@ -18,6 +18,7 @@ import GoogleButton from "@/components/auth/GoogleButton";
 import AuthFooter from "@/components/auth/footer/AuthFooter";
 import Wrapper from "@/components/auth/Wrapper";
 import { useRouter } from "next/navigation";
+import axios from 'axios';
 
 function Page(): ReactNode {
    const form = useForm<SignUpFormSchemaType>({
@@ -32,11 +33,30 @@ function Page(): ReactNode {
 
    const router = useRouter();
 
-   const onSubmit = (data: SignUpFormSchemaType) => {
-       console.log(data);
+  const onSubmit = async (data: SignUpFormSchemaType) => {
+      try {
+          const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+              {
+                  email: data.email,
+                  password: data.password,
+                  password_confirmation: data.passwordConfirm,
+              },
+          );
 
-       router.push("/verify_email");
-   };
+          console.log(response.data);
+
+          sessionStorage.setItem("verificationEmail", data.email);
+
+          router.push("/verify_email");
+      } catch (error) {
+          if (axios.isAxiosError(error)) {
+              console.log(error.response?.data);
+          } else {
+              console.log(error);
+          }
+      }
+  };
     return (
         <Wrapper>
             <Headline title="Sign Up" subTitle="Start your learning journey" />

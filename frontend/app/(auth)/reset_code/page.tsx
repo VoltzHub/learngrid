@@ -6,11 +6,16 @@ import VerifyResetCode from "@/components/auth/reset_password/VerifyResetCode";
 import Button from "@/components/auth/Button";
 import AuthFooter from "@/components/auth/footer/AuthFooter";
 import Wrapper from "@/components/auth/Wrapper";
-import { resetOTPSchema, ResetOTPSchemaType } from "@/schema/resetOTPSchema";
+import Logo from "@/components/shared/Logo";
+import {
+    resetOTPSchema,
+    type ResetOTPSchemaType,
+} from "@/schema/resetOTPSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import api from "@/lib/axios";
 
 function Page(): ReactNode {
     const form = useForm<ResetOTPSchemaType>({
@@ -23,12 +28,30 @@ function Page(): ReactNode {
 
     const router = useRouter();
 
+    const [email, setEmail] = useState<string | null>(null);
+    const [isChecking, setIsChecking] = useState(true);
     const [seconds, setSeconds] = useState(60);
     const [isResending, setIsResending] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
+
+    // Check that the user actually requested a password reset
+    useEffect(() => {
+        const storedEmail = sessionStorage.getItem("resetEmail");
+
+        if (!storedEmail) {
+            router.replace("/forgot_password");
+            return;
+        }
+
+        setEmail(storedEmail);
+        setIsChecking(false);
+    }, [router]);
 
     // Countdown
     useEffect(() => {
-        if (seconds <= 0) return;
+        if (seconds <= 0) {
+            return;
+        }
 
         const timer = setInterval(() => {
             setSeconds((prev) => prev - 1);
@@ -38,56 +61,107 @@ function Page(): ReactNode {
     }, [seconds]);
 
     const handleResend = async () => {
-        if (seconds > 0 || isResending) return;
+        if (seconds > 0 || isResending || !email) {
+            return;
+        }
 
         try {
             setIsResending(true);
 
-            await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/forgot-password`,
-                {
-                    email: "sarah.jansen@gmail.com",
-                },
-            );
+            await api.post("/api/forgot-password", {
+                email,
+            });
 
-            // Restart countdown
             setSeconds(60);
 
-            // Clear the previous OTP
             form.reset({
                 otpCode: "",
             });
         } catch (error) {
-            console.error("Failed to resend code:", error);
+            if (axios.isAxiosError(error)) {
+                console.error(error.response?.data);
+            } else {
+                console.error(error);
+            }
         } finally {
             setIsResending(false);
         }
     };
 
-    const onSubmit = (data: ResetOTPSchemaType) => {
-        console.log(data);
-        router.push("/reset_password_successful");
+    const onSubmit = async (data: ResetOTPSchemaType) => {
+        if (!email || isVerifying) {
+            return;
+        }
+
+        try {
+            setIsVerifying(true);
+
+            const response = await api.post("/api/verify-reset-code", {
+                email,
+                code: data.otpCode,
+            });
+
+            console.log(response.data);
+
+            router.push("/reset_password");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const message =
+                    error.response?.data?.message ||
+                    "Invalid or expired reset code.";
+
+                form.setError("otpCode", {
+                    type: "server",
+                    message,
+                });
+            } else {
+                console.error(error);
+            }
+        } finally {
+            setIsVerifying(false);
+        }
     };
+
+    // Show loading while checking sessionStorage
+    if (isChecking) {
+        return (
+            <Wrapper>
+                <div className="flex min-h-75 flex-col items-center justify-center">
+                    <Logo styles="" />
+
+                    <p className="font-inter text-gray-500">
+                        Checking reset request...
+                    </p>
+                </div>
+            </Wrapper>
+        );
+    }
+
+    if (!email) {
+        return null;
+    }
 
     return (
         <Wrapper>
             <Headline
                 title="Please check your email"
-                subTitle="We just sent 4-digit code to sarah.jansen@gmail.com, enter it below:"
+                subTitle={`We just sent a 4-digit code to ${email}, enter it below:`}
             />
 
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <VerifyResetCode form={form} />
 
-                <Button text="Verify" disabled={!form.formState.isValid} />
+                <Button
+                    text={isVerifying ? "Verifying..." : "Verify"}
+                    disabled={!form.formState.isValid || isVerifying}
+                />
             </form>
 
-            {/* Resend section */}
             <div className="mt-6 text-center font-inter text-sm">
                 {seconds > 0 ? (
                     <p className="text-gray-500">
-                        Resend code in{" "}
-                        <span className="font-semibold">{seconds}s</span>
+                        Resend code{" "}
+                        <span className="font-semibold">in {seconds}s</span>
                     </p>
                 ) : (
                     <button
