@@ -92,7 +92,7 @@ export default function AuthSlider(): ReactNode {
     return (
         <div
             ref={containerRef}
-            className="relative h-full w-full overflow-hidden font-inter"
+            className="relative h-full w-full overflow-hidden font-inter pb-4"
         >
             <div ref={trackRef} className="flex h-full w-full">
                 {slides.map((slide) => (
